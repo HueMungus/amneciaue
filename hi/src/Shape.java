@@ -5,7 +5,7 @@ public class Shape {
     public int mass;
     public double inv_mass;
     public double restitution; // bounciness
-
+    public Vector2 v;
 
 
 
