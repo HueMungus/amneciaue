@@ -61,9 +61,6 @@ public class Vector2 {
         return new Vector2(Math.round(this.getX() * d),Math.round(this.getY() * d));
     }
 
-    public static int DotProduct(Vector2 A, Vector2 B) {
-        return Math.round((A.getX() * B.getX()) + (A.getY() * B.getY()));
-    }
     public double length() { return Math.sqrt(x * x + y * y); }
 
     public static double length(Vector2 of) { return Math.sqrt(of.x * of.x + of.y + of.y); }
@@ -72,7 +69,7 @@ public class Vector2 {
         return x * other.x + y * other.y;
     }
 
-    public static double DotProduct(Vector2 one, Vector2 two) { return one.x * two.x + one.y * two.y; }
+    public static double DotProduct(Vector2 a, Vector2 b) { return a.x * b.x + a.y * b.y; }
 
     public double CrossProduct(Vector2 other) { return x * other.y - y * other.x; }
 
