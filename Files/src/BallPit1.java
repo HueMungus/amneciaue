@@ -38,7 +38,7 @@ public class BallPit1 extends GameEngine {
 
 	//Variables to represent the ball
 	//Position of the ball (centre)
-	int N = 1000;
+	int N = 5000;
 	double[] ballPositionX = new double[N];
 	double[] ballPositionY = new double[N];
 
