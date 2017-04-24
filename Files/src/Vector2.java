@@ -39,7 +39,6 @@ public class Vector2 {
 		return this;
 	}
 	
-	// multThis is preferred as it does not create a new Vector2
 	public Vector2 multThis(double d) {
 		this.x = this.x * d;
 		this.y = this.y * d;
@@ -49,16 +48,6 @@ public class Vector2 {
 	public Vector2 mult(double d) {
 		return new Vector2(Math.round(this.x * d),Math.round(this.y * d));
 	}
-	
-	/*// float for x
-	public void add(float add) {
-		this.x += add;
-	}
-	
-	// int for y
-	public void add(int add) {
-		this.y += add;
-	}*/
 	
 	public static long DotProduct(Vector2 A, Vector2 B) {
 		return Math.round((A.x * B.x) + (A.y * B.y));
