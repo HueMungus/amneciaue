@@ -13,6 +13,11 @@ public class Vec2 {
 		this.y = y;
 	}
 	
+	public Vec2() {
+		this.x = 0;
+		this.y = 0;
+	}
+	
 	public float length() {
 		return (float) Math.sqrt(x * x + y * y);
 	}
