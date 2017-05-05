@@ -476,7 +476,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 		try {
 			// Load Image
 			Image image = ImageIO.read(new File(filename));
-
+			
 			// Return Image
 			return image;
 		} catch (IOException e) {
@@ -518,7 +518,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 			System.out.println("Error: cannot draw null image.\n");
 			return;
 		}
-
+		
 		// Draw image on screen at (x,y)
 		mGraphics.drawImage(image, (int)x, (int)y, null);
 	}

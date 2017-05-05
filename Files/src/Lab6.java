@@ -433,7 +433,7 @@ public class Lab6 extends GameEngine {
 	// Function to initialise the game
 	public void init() {
 		// Load sprites
-		spritesheet = loadImage("spritesheet.png");
+		spritesheet = loadImage(System.getProperty("user.dir") + "/src/" + "spritesheet.png");
 
 		// Setup booleans
 		left = false;

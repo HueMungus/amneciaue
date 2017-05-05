@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class GameLevel extends Level {
-	ArrayList<Block> parts;
 	ArrayList<MoveBlock> moveblocks;
 	ArrayList<StaticBlock> staticblocks;
 	Block focus;

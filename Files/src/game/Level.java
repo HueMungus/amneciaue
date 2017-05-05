@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class Level {
+	ArrayList<Block> parts;
 	
 	public boolean inMotion;
 	

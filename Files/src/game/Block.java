@@ -3,7 +3,7 @@ package game;
 import java.awt.Color;
 
 public class Block {
-	Color color;
+	Color color = Engine.BColor;
 	
 	Vec2 min, dim; // dim = dimension, width and height are stored here
 	

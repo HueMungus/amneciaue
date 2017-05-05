@@ -1,20 +1,10 @@
 package game;
 
+import java.awt.Color;
+
 public class MoveBlock extends Block {
 	Vec2 pos;
 	Vec2 v;
-	
-	
-	/**
-	 * Makes a MoveBlock with position:
-	 * @param pos
-	 * and with velocity:
-	 * @param v
-	 */
-	public MoveBlock(Vec2 pos, Vec2 v) {
-		this.pos = pos;
-		this.v = v;
-	}
 	
 	/**
 	 * Makes MoveBlock with position:
@@ -30,16 +20,22 @@ public class MoveBlock extends Block {
 	public MoveBlock(int x, int y, int vx, int vy) {
 		this.pos = new Vec2(x,y);
 		this.v = new Vec2(vx,vy);
+		this.color = Engine.MBColor;
 	}
+	
+	/**
+	 * Makes a MoveBlock with position:
+	 * @param pos
+	 * and with velocity:
+	 * @param v
+	 */
+	public MoveBlock(Vec2 pos, Vec2 v) { this((int)pos.x, (int)pos.y, (int)v.x, (int)v.y); }
 	
 	/**
 	 * Makes a no-velocity MoveBlock with position:
 	 * @param pos
 	 */
-	public MoveBlock(Vec2 pos) {
-		this.pos = pos;
-		this.v = new Vec2();
-	}
+	public MoveBlock(Vec2 pos) { this((int)pos.x, (int)pos.y, 0,0); }
 	
 	/**
 	 * Makes a no-velocity MoveBlock with position:
@@ -47,12 +43,9 @@ public class MoveBlock extends Block {
 	 * with:
 	 * @param y
 	 */
-	public MoveBlock(int x, int y) {
-		this.pos = new Vec2(x,y);
-		this.v = new Vec2();
-	}
+	public MoveBlock(int x, int y) { this(x,y,0,0); }
 	
-	public MoveBlock() { this.pos = new Vec2(); this.v = new Vec2(); }
+	public MoveBlock() { this(0,0,0,0); }
 	
 	@Override
 	public void onHit() {
