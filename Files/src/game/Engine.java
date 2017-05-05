@@ -36,7 +36,9 @@ public class Engine extends GameEngine {
 	// Goes through each array at the end of update loop
 	ArrayList<Block> toAdd = new ArrayList<Block>();
 	ArrayList<Block> toRemove = new ArrayList<Block>();
-	ArrayList<Block> currentBlocks = new ArrayList<Block>();
+	ArrayList<Block> currentBlocks;
+	
+	Level currentLevel;
 
 	JFrame mFrame;
 	JPanel mPanel;
@@ -45,13 +47,13 @@ public class Engine extends GameEngine {
 	int windowWidth, windowHeight;
 
 	public Engine(int windowWidth, int windowHeight) {
-		programPosition += "Engine Constructor, ";
 		mFrame = new JFrame();
 		mPanel = new JPanel();
 		mFrame.setTitle("cool game");
 		mFrame.setSize(windowWidth, windowHeight);
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setLocationRelativeTo(null);
+		currentLevel = new Level();
 		//			Panel Keybinds
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
@@ -61,8 +63,9 @@ public class Engine extends GameEngine {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-
+				currentLevel.AltLeft();
+				System.out.println("AltLeft");
+				
 			}
 
 		});
@@ -70,8 +73,8 @@ public class Engine extends GameEngine {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-
+				currentLevel.Left();
+				System.out.println("Left");
 			}
 
 		});
@@ -79,8 +82,8 @@ public class Engine extends GameEngine {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
-
+				currentLevel.AltRight();
+				System.out.println("AltRight");
 			}
 
 		});
@@ -88,26 +91,25 @@ public class Engine extends GameEngine {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
+				currentLevel.Right();
+				System.out.println("Right");
 			}
 			
 		});
 		
 		
+		
+		mFrame.add(mPanel);
 		mFrame.setVisible(true);
 
 	}
 
 	public static void main(String[] args) {
-		DebugString.add("-Engine main method-");
 		Engine steve = new Engine(500, 500);
-		DebugString.back();
 	}
 
 	@Override
 	public void update(double dt) {
-		DebugString.add("-Update Method");
 		//		Physics here, not in paintComponent() (duh)
 
 

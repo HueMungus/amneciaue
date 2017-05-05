@@ -6,7 +6,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class Level {
-	ArrayList<PosComponent> parts;
+	
+	public boolean inMotion;
 	
 	
 	/**
@@ -40,34 +41,17 @@ public class Level {
 	 * @param filename
 	 * @param sameDirectory
 	 */
-	public void Load(String filename, boolean sameDirectory) {
-		File file;
-		if (sameDirectory) {
-			file = new File(filename);
-			System.out.println(filename);
-		} else {
-			file = new File(System.getProperty("user.dir") + filename);
-			System.out.println(System.getProperty("user.dir") + " with " + filename);
-		}
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String[] words = line.split(" ");
-				switch (words[0].toLowerCase()) {
-				case "staticblock" :
-					
-					break;
-				case "moveblock" :
-					
-					break;
-				default:
-					System.out.println("Unknown block type: " + words[0] + "\"");
-					break;
-				}
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+	
+	public void Left() {
 	}
+	
+	public void AltLeft() {
+	}
+	
+	public void Right() {
+	}
+	
+	public void AltRight() {
+	}
+	
 }
