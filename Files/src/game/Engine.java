@@ -87,7 +87,7 @@ public class Engine extends GameEngine implements ActionListener {
 		}
 		mFrame = new JFrame();
 		mPanel = new JPanel();
-		mFrame.setTitle("cool game");
+		mFrame.setTitle("cool game daddy");
 		mFrame.setSize(frameWidth, frameHeight);
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setLocationRelativeTo(null);
