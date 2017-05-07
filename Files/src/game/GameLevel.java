@@ -95,6 +95,16 @@ public class GameLevel extends Level {
 			System.out.println("Exception caught in Load Method with Load(" + filename + ", " + sameDirectory + ")");
 		}
 	}
+	
+	public void add(MoveBlock moveblock) {
+		this.parts.add(moveblock);
+		this.moveblocks.add(moveblock);
+	}
+	
+	public void add(StaticBlock staticblock) {
+		this.parts.add(staticblock);
+		this.staticblocks.add(staticblock);
+	}
 
 	@Override
 	public void Left() {

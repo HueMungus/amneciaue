@@ -138,8 +138,7 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 	// Main Game function
 	//-------------------------------------------------------
 
-	// GameEngine Constructor (which I don't want, sorry guys but I'm making it myself)
-	/*
+	// GameEngine Constructor
 	public GameEngine() {
 		// Create graphics transform stack
 		mTransforms = new Stack<AffineTransform>();
@@ -157,7 +156,6 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 			}
 		});
 	}
-	*/
 
 	// Create Game Function
 	public static void createGame(GameEngine game, int framerate) {

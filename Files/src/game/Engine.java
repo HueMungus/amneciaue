@@ -1,11 +1,15 @@
 package game;
 
+// Martin Johnson (Gave dev lecturer) said it was fine having multiple java files
+
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-public class Engine extends GameEngine {
+public class Engine extends GameEngine implements ActionListener {
 	//	 In future if multi-threaded, this will be the renderer, another class will be the physics engine
 	//	 As such update schedule will be 
 	//	Physics - not done
@@ -28,14 +32,11 @@ public class Engine extends GameEngine {
 	//	Constructor - in progress
 	//	Set up screen clearing - done
 	//	Getting keyboard/mouse input - in progress
-	//	Debugging 'Checkpoints' - not done
 	//	
-	//	Levels - not done
-	//	
+	//	Levels - part done
 	//	
 	//	
-	
-	public static String programPosition = "At: ";
+	//	
 	
 	// Goes through each array at the end of update loop
 	ArrayList<Block> toAdd = new ArrayList<Block>();
@@ -55,26 +56,29 @@ public class Engine extends GameEngine {
 	public static Color BColor = Color.LIGHT_GRAY;
 	
 	Level currentLevel;
+	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
+	static int frameWidth = 600, frameHeight = 600;
 	
 	JFrame mFrame;
 	JPanel mPanel;
 	Insets insets;
 	
-	Image menu;
+	Image menuImage;
 
 	int windowWidth, windowHeight;
 
 	@SuppressWarnings("serial")
-	public Engine(int windowWidth, int windowHeight) {
+	public Engine() {
 		try {
-			menu = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "menu.jpg"));
+			menuImage = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "menu.jpg"));
 		} catch (IOException e) {
-			System.out.println("bad image read");
+			System.out.println("bad image read:");
+			System.out.println(System.getProperty("user.dir") + "/src/" + "menu.jpg");
 		}
 		mFrame = new JFrame();
 		mPanel = new JPanel();
 		mFrame.setTitle("cool game");
-		mFrame.setSize(windowWidth, windowHeight);
+		mFrame.setSize(frameWidth, frameHeight);
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setLocationRelativeTo(null);
 		currentLevel = new Level() {
@@ -95,7 +99,8 @@ public class Engine extends GameEngine {
 //				Options menu here also
 			}
 		};
-		//			Panel Key binds
+		currentLevel.add(new Block(menuImage));
+//					Panel Key binds
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");
@@ -144,17 +149,34 @@ public class Engine extends GameEngine {
 		mFrame.setVisible(true);
 
 	}
+	
+	@Override
+	public void setupWindow(int width, int height) { }
 
 	public static void main(String[] args) {
-		Engine steve = new Engine(500, 500);
+		Engine steve = new Engine();
 		steve.getTime();
 	}
 
 	@Override
-	public void update(double dt) {
+	public void update(double dt) {	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (physicsOn) {
+			Collisions();
+		}
 		
-
-
+		if (removeOn) {
+			
+		}
+		if (addOn) {
+			
+		}
+		
+		if (renderOn) {
+			Render();
+		}
 	}
 
 	public void Render() {
@@ -164,14 +186,23 @@ public class Engine extends GameEngine {
 
 		//		Render Blocks
 		for (Block block : currentLevel.parts) {
-			mGraphics.setColor(block.color);
-			mGraphics.fillRect(block.x(), block.y(), block.width(), block.height());
+			if (block.hasImage) {
+				mGraphics.drawImage(block.image, block.x(), block.y(), block.width(), block.height(), null);
+			} else {
+				mGraphics.setColor(block.color);
+				mGraphics.fillRect(block.x(), block.y(), block.width(), block.height());
+			}
 		}
+	}
+	
+	public void Collisions() {
+		
 	}
 
 	@Override
 	public void paintComponent() {
 
 	}
+
 
 }

@@ -3,7 +3,6 @@ package game;
 import java.awt.Color;
 
 public class MoveBlock extends Block {
-	Vec2 pos;
 	Vec2 v;
 	
 	/**

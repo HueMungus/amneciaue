@@ -1,46 +1,62 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Image;
 
 public class Block {
+	public boolean hasImage = false;
+	public boolean uniqueCoords = false;
+	public float uniqueWidth, uniqueHeight;
+	public Image image;
 	Color color = Engine.BColor;
+	public static float bWidth, bHeight;
 	
-	Vec2 min, dim; // dim = dimension, width and height are stored here
+	Vec2 pos; // dim = dimension, width and height are stored here
 	
 	public void onHit() {
 		
 	}
 	
-	public Block() {
-		this.min = new Vec2(0,0);
-		this.dim = new Vec2(0,0);
+	public Block() { this(0,0); }
+	
+	public Block(int x, int y) {	
+		this.pos = new Vec2(x, y);
 	}
 	
-	public Block(int x, int y, int width, int height) {
-		
-		this.min = new Vec2(x, y);
-		this.dim = new Vec2(x + width, y + height);
+	public Block(int x, int y, Image image) {
+		this(x,y);
+		if (image != null) {
+			this.hasImage = true;
+			this.image = image;
+		} else {
+			System.out.println("block made with null image");
+		}
 	}
 	
-	public Block(float x, float y, float width, float height) {
-		this.min = new Vec2(x, y);
-		this.dim = new Vec2(x + width, y + height);
-	}
+	public Block(float x, float y, Image image) { this((int) x,(int) y,image); }
+	public Block(Image image) {	this(0,0,image); }
+	public Block(float x, float y) { this((int) x,(int) y); }
 	
 	public int x() {
-		return (int) min.x;
+		return (int) pos.x;
 	}
 	
 	public int y() {
-		return (int) min.y;
+		return (int) pos.y;
 	}
 	
 	public int width() {
-		return (int) dim.x;
+		if (uniqueCoords) {
+			return (int) uniqueWidth;
+		}
+		return (int) bWidth;
 	}
 	
 	public int height() {
-		return (int) dim.y;
+		if (uniqueCoords) {
+			return (int) uniqueHeight;
+		}
+		return (int) bHeight;
 	}
 	
 	/**

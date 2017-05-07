@@ -34,6 +34,10 @@ public class Level {
 		
 	}
 	
+	public void add(Block block) {
+		this.parts.add(block);
+	}
+	
 	
 	/**
 	 * Loads contents of the file specified into this Level
