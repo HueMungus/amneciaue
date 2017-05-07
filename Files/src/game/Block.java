@@ -33,9 +33,25 @@ public class Block {
 		}
 	}
 	
-	public Block(float x, float y, Image image) { this((int) x,(int) y,image); }
+	public Block(int x, int y, int width, int height) {
+		this(x,y);
+		this.uniqueCoords = true;
+		this.uniqueWidth = width;
+		this.uniqueHeight = height;
+	}
+	
+	public Block(int x, int y, int width, int height, Image image) {
+		this(x,y,width,height);
+		if (image != null) {
+			this.hasImage = true;
+			this.image = image;
+		} else {
+			System.out.println("block made with null image");
+		}
+	}
+	
+	public Block(Image image, int width, int height) { this(0,0,width,height,image); }
 	public Block(Image image) {	this(0,0,image); }
-	public Block(float x, float y) { this((int) x,(int) y); }
 	
 	public int x() {
 		return (int) pos.x;

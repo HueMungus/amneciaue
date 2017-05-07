@@ -3,13 +3,13 @@ package game;
 // Martin Johnson (Gave dev lecturer) said it was fine having multiple java files
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.Timer;
 
 public class Engine extends GameEngine implements ActionListener {
 	//	 In future if multi-threaded, this will be the renderer, another class will be the physics engine
@@ -54,7 +55,7 @@ public class Engine extends GameEngine implements ActionListener {
 	 * Default Block Color
 	 */
 	public static Color BColor = Color.LIGHT_GRAY;
-	
+	Timer loop = new Timer(50, this);
 	Level currentLevel;
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	static int frameWidth = 600, frameHeight = 600;
@@ -62,6 +63,7 @@ public class Engine extends GameEngine implements ActionListener {
 	JFrame mFrame;
 	JPanel mPanel;
 	Insets insets;
+	Graphics2D Graphics;
 	
 	Image menuImage;
 
@@ -99,7 +101,7 @@ public class Engine extends GameEngine implements ActionListener {
 //				Options menu here also
 			}
 		};
-		currentLevel.add(new Block(menuImage));
+		currentLevel.add(new Block(menuImage, 600, 600));
 //					Panel Key binds
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
@@ -142,11 +144,12 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 			
 		});
-		
-		
-		
 		mFrame.add(mPanel);
 		mFrame.setVisible(true);
+
+		renderOn = true;
+		loop.start();
+		Graphics = (Graphics2D) mFrame.getGraphics();
 
 	}
 	
@@ -163,7 +166,9 @@ public class Engine extends GameEngine implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("Updating...");
 		if (physicsOn) {
+			System.out.println("Physics-ing...");
 			Collisions();
 		}
 		
@@ -175,6 +180,7 @@ public class Engine extends GameEngine implements ActionListener {
 		}
 		
 		if (renderOn) {
+			System.out.println("Rendering...");
 			Render();
 		}
 	}
@@ -182,15 +188,19 @@ public class Engine extends GameEngine implements ActionListener {
 	public void Render() {
 		//		Rendering
 		//		Flush screen
-		mGraphics.clearRect(0, 0, mFrame.getWidth(), mFrame.getHeight());
+		Graphics.
+		clearRect(0, 0, 
+				mFrame.getWidth(), mFrame.getHeight());
 
 		//		Render Blocks
 		for (Block block : currentLevel.parts) {
 			if (block.hasImage) {
-				mGraphics.drawImage(block.image, block.x(), block.y(), block.width(), block.height(), null);
+//				If it has image, draw it
+				Graphics.drawImage(block.image, block.x(), block.y(), block.width(), block.height(), null);
 			} else {
-				mGraphics.setColor(block.color);
-				mGraphics.fillRect(block.x(), block.y(), block.width(), block.height());
+//				Otherwise it should be using a color, so draw a rectangle of that color
+				Graphics.setColor(block.color);
+				Graphics.fillRect(block.x(), block.y(), block.width(), block.height());
 			}
 		}
 	}
