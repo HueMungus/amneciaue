@@ -57,6 +57,8 @@ public class Engine extends GameEngine implements ActionListener {
 	public static Color BColor = Color.LIGHT_GRAY;
 	Timer loop = new Timer(50, this);
 	Level currentLevel;
+	Level menu;
+	Level othermenu;
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	static int frameWidth = 600, frameHeight = 600;
 	
@@ -65,7 +67,7 @@ public class Engine extends GameEngine implements ActionListener {
 	Insets insets;
 	Graphics2D Graphics;
 	
-	Image menuImage;
+	Image menuImage, otherMenuImage;
 
 	int windowWidth, windowHeight;
 
@@ -77,13 +79,19 @@ public class Engine extends GameEngine implements ActionListener {
 			System.out.println("bad image read:");
 			System.out.println(System.getProperty("user.dir") + "/src/" + "menu.jpg");
 		}
+		try {
+			otherMenuImage = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "othermenu.jpg"));
+		} catch (IOException e) {
+			System.out.println("bad image read:");
+			System.out.println(System.getProperty("user.dir") + "/src/" + "othermenu.jpg");
+		}
 		mFrame = new JFrame();
 		mPanel = new JPanel();
 		mFrame.setTitle("cool game");
 		mFrame.setSize(frameWidth, frameHeight);
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setLocationRelativeTo(null);
-		currentLevel = new Level() {
+		menu = new Level() {
 			@Override
 			public void Left() {
 //				Start game code here
@@ -94,14 +102,30 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 			@Override
 			public void AltLeft() {
-//				Options menu (if implemented ever) here
+				currentLevel = othermenu;
 			}
 			@Override
 			public void AltRight() {
-//				Options menu here also
+				currentLevel = othermenu;
 			}
 		};
-		currentLevel.add(new Block(menuImage, 600, 600));
+		menu.add(new Block(menuImage, 600, 600));
+		othermenu = new Level() {
+			@Override
+			public void Left() {  }
+			@Override
+			public void Right() {  }
+			@Override
+			public void AltLeft() {
+				currentLevel = menu;
+			}
+			@Override
+			public void AltRight() {
+				currentLevel = menu;
+			}
+		};
+		othermenu.add(new Block(otherMenuImage, 600, 600));
+		currentLevel = menu;
 //					Panel Key binds
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
