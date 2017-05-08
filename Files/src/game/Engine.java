@@ -222,7 +222,7 @@ public class Engine extends GameEngine implements ActionListener {
 		//		Render Blocks
 		for (Block block : level.parts) {
 			if (block.hasImage) {
-//				If it has image, draw it
+//				If it has an image, draw it, I'm assuming if hasImage is true, its Image won't be null
 				Graphics.drawImage(block.image, block.x(), block.y(), block.width(), block.height(), null);
 			} else {
 //				Otherwise it should be using a color, so draw a rectangle of that color
@@ -239,9 +239,7 @@ public class Engine extends GameEngine implements ActionListener {
 	}
 
 	@Override
-	public void paintComponent() {
-
-	}
+	public void paintComponent() {  } //Overriden from GameEngine, method is abstract so must be overriden
 
 
 }
