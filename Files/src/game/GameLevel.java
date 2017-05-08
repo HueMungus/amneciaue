@@ -20,19 +20,19 @@ public class GameLevel extends Level {
 		for (StaticBlock sblock : staticblocks) {
 			this.staticblocks.add(sblock);
 		}
-		inMotion = false;
+		physicsOn = false;
 	}
 	
 	public GameLevel(ArrayList<Block> parts, ArrayList<MoveBlock> moveblocks, ArrayList<StaticBlock> staticblocks) {
 		this.parts = parts;
 		this.moveblocks = moveblocks;
 		this.staticblocks = staticblocks;
-		inMotion = false;
+		physicsOn = false;
 	}
 	
 	public GameLevel(String filename, boolean sameDirectory) {
 		Load(filename, sameDirectory);
-		inMotion = false;
+		physicsOn = false;
 	}
 	
 	public void Load(String filename, boolean sameDirectory) {
