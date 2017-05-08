@@ -5,7 +5,6 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -54,7 +53,7 @@ public class Engine extends GameEngine implements ActionListener {
 	/**
 	 * Default Block Color
 	 */
-	public static Color BColor = Color.LIGHT_GRAY;
+	public static Color BColor = Color.CYAN;
 	Timer loop = new Timer(50, this);
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
@@ -168,6 +167,10 @@ public class Engine extends GameEngine implements ActionListener {
 		renderOn = true;									// false by default
 		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
 		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
+		
+		for (Block bob : testLevel.parts) {
+			System.out.println(bob.x() + ", " + bob.y() + " with dimensions " + bob.width() + ", " + bob.height());
+		}
 
 	}
 	
@@ -227,12 +230,15 @@ public class Engine extends GameEngine implements ActionListener {
 			} else {
 //				Otherwise it should be using a color, so draw a rectangle of that color
 				Graphics.setColor(block.color);
+				System.out.println("Rendering a block with color: " + block.color.toString());
 				Graphics.fillRect(block.x(), block.y(), block.width(), block.height());
+				System.out.println("Using coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
 			}
 		}
 	}
 	
 	public void Collisions() {
+		// Checking if the current level of type Level is the same object as the current level of type GameLevel (yeah its annoying)
 		if (level.getClass().equals(GameLevel.class)) {
 //			Physics
 		}

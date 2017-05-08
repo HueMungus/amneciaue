@@ -60,27 +60,27 @@ public class GameLevel extends Level {
 				if (words[0] != null) {
 					switch (words[0].toLowerCase()) {
 					case "static":
-						if (words[1] != null && words[2] != null) {
+						if (words.length > 2) {
 							pos.x = Integer.parseInt(words[1]);
 							pos.y = Integer.parseInt(words[2]);
 						} else {
 							pos.x = pos.y = 0;
 						}
-						StaticBlock bob = new StaticBlock(pos);
+						StaticBlock bob = new StaticBlock((int) pos.x,(int) pos.y);
 						parts.add(bob);
 						staticblocks.add(bob);
 						System.out.println("Made a staticblock with position: " + pos.x + ", " + pos.y);
 						break;
 					case "move":
 						//					Set the position vector if specified in the file
-						if (words[1] != null && words[2] != null) {
+						if (words.length > 2) {
 							pos.x = Integer.parseInt(words[1]);
 							pos.y = Integer.parseInt(words[2]);
 						} else {
 							pos.x = pos.y = 0;
 						}
 						//					set the velocity vector if specified in the file
-						if (words[3] != null && words[4] != null) {
+						if (words.length > 4) {
 							vel.x = (float) Double.parseDouble(words[3]);
 							vel.y = (float) Double.parseDouble(words[4]);
 						} else {
