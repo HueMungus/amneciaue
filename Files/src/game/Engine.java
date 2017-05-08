@@ -41,35 +41,27 @@ public class Engine extends GameEngine implements ActionListener {
 	// Goes through each array at the end of update loop
 	ArrayList<Block> toAdd = new ArrayList<Block>();
 	ArrayList<Block> toRemove = new ArrayList<Block>();
-	
-	/**
-	 * MoveBlock Color
-	 */
-	public static Color MBColor = Color.ORANGE;
-	/**
-	 * StaticBlock Color
-	 */
+//	Color stuff
+	public static Color MBColor = Color.LIGHT_GRAY;
 	public static Color SBColor = Color.DARK_GRAY;
-	/**
-	 * Default Block Color
-	 */
-	public static Color BColor = Color.CYAN;
-	Timer loop = new Timer(50, this);
+	public static Color BColor = Color.PINK;
+	public static Color FColor = Color.BLUE;
+//	Level stuff
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
 	Level level;
 	Level menu;
 	Level othermenu;
+//	Render/Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
+	Timer loop = new Timer(50, this);
+//	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
-	
 	JFrame mFrame;
 	JPanel mPanel;
 	Graphics2D Graphics;
-	
+//	Image stuff
 	Image menuImage, otherMenuImage;
-
-	int windowWidth, windowHeight;
 
 	@SuppressWarnings("serial")
 	public Engine() {
@@ -161,12 +153,14 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 			
 		});
+		mPanel.setDoubleBuffered(true);
 		mFrame.add(mPanel);									// Adding the Panel that will contain the stuff to the window
 		mFrame.setVisible(true);							// You have to make it visible (invisible by default)
 
 		renderOn = true;									// false by default
 		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
 		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
+		Graphics.setBackground(Color.black);
 		
 		for (Block bob : testLevel.parts) {
 			System.out.println(bob.x() + ", " + bob.y() + " with dimensions " + bob.width() + ", " + bob.height());
@@ -230,9 +224,9 @@ public class Engine extends GameEngine implements ActionListener {
 			} else {
 //				Otherwise it should be using a color, so draw a rectangle of that color
 				Graphics.setColor(block.color);
-				System.out.println("Rendering a block with color: " + block.color.toString());
+//				System.out.println("Rendering a block with color: " + block.color.toString());
 				Graphics.fillRect(block.x(), block.y(), block.width(), block.height());
-				System.out.println("Using coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
+//				System.out.println("Using coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
 			}
 		}
 	}
