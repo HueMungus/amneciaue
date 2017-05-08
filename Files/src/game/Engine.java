@@ -57,7 +57,7 @@ public class Engine extends GameEngine implements ActionListener {
 	public static Color BColor = Color.LIGHT_GRAY;
 	Timer loop = new Timer(50, this);
 	GameLevel gLevel;
-	GameLevel testLevel = new GameLevel("testlevel", true);
+	GameLevel testLevel = new GameLevel("testlevel.txt", true);
 	Level level;
 	Level menu;
 	Level othermenu;
