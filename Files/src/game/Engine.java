@@ -56,7 +56,9 @@ public class Engine extends GameEngine implements ActionListener {
 	 */
 	public static Color BColor = Color.LIGHT_GRAY;
 	Timer loop = new Timer(50, this);
-	Level currentLevel;
+	GameLevel gLevel;
+	GameLevel testLevel = new GameLevel("testlevel", true);
+	Level level;
 	Level menu;
 	Level othermenu;
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
@@ -64,7 +66,6 @@ public class Engine extends GameEngine implements ActionListener {
 	
 	JFrame mFrame;
 	JPanel mPanel;
-	Insets insets;
 	Graphics2D Graphics;
 	
 	Image menuImage, otherMenuImage;
@@ -73,12 +74,14 @@ public class Engine extends GameEngine implements ActionListener {
 
 	@SuppressWarnings("serial")
 	public Engine() {
+//		Import menu.jpg
 		try {
 			menuImage = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "menu.jpg"));
 		} catch (IOException e) {
 			System.out.println("bad image read:");
 			System.out.println(System.getProperty("user.dir") + "/src/" + "menu.jpg");
 		}
+//		Import othermenu.jpg
 		try {
 			otherMenuImage = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "othermenu.jpg"));
 		} catch (IOException e) {
@@ -94,19 +97,21 @@ public class Engine extends GameEngine implements ActionListener {
 		menu = new Level() {
 			@Override
 			public void Left() {
-//				Start game code here
+				this.Right();
 			}
 			@Override
 			public void Right() {
-//				Start game code here as well
+				gLevel = testLevel;
+				level = testLevel;
+				physicsOn = true;
 			}
 			@Override
 			public void AltLeft() {
-				currentLevel = othermenu;
+				level = othermenu;
 			}
 			@Override
 			public void AltRight() {
-				currentLevel = othermenu;
+				level = othermenu;
 			}
 		};
 		menu.add(new Block(menuImage, 600, 600));
@@ -117,15 +122,15 @@ public class Engine extends GameEngine implements ActionListener {
 			public void Right() {  }
 			@Override
 			public void AltLeft() {
-				currentLevel = menu;
+				level = menu;
 			}
 			@Override
 			public void AltRight() {
-				currentLevel = menu;
+				level = menu;
 			}
 		};
 		othermenu.add(new Block(otherMenuImage, 600, 600));
-		currentLevel = menu;
+		level = menu;
 //					Panel Key binds
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
@@ -135,7 +140,7 @@ public class Engine extends GameEngine implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				currentLevel.AltLeft();
+				level.AltLeft();
 				System.out.println("AltLeft");
 				
 			}
@@ -145,7 +150,7 @@ public class Engine extends GameEngine implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				currentLevel.Left();
+				level.Left();
 				System.out.println("Left");
 			}
 
@@ -154,7 +159,7 @@ public class Engine extends GameEngine implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				currentLevel.AltRight();
+				level.AltRight();
 				System.out.println("AltRight");
 			}
 
@@ -163,7 +168,7 @@ public class Engine extends GameEngine implements ActionListener {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				currentLevel.Right();
+				level.Right();
 				System.out.println("Right");
 			}
 			
@@ -190,21 +195,21 @@ public class Engine extends GameEngine implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("Updating...");
+//		System.out.println("Updating...");
 		if (physicsOn) {
-			System.out.println("Physics-ing...");
-			Collisions();
+//			System.out.println("Physics-ing...");
+			Collisions(); // Collisions only work on GameLevels, but GameLevel test is done in this method
 		}
 		
-		if (removeOn) {
+		/*if (removeOn) {
 			
 		}
 		if (addOn) {
 			
-		}
+		}*/
 		
 		if (renderOn) {
-			System.out.println("Rendering...");
+//			System.out.println("Rendering...");
 			Render();
 		}
 	}
@@ -217,7 +222,7 @@ public class Engine extends GameEngine implements ActionListener {
 				mFrame.getWidth(), mFrame.getHeight());
 
 		//		Render Blocks
-		for (Block block : currentLevel.parts) {
+		for (Block block : level.parts) {
 			if (block.hasImage) {
 //				If it has image, draw it
 				Graphics.drawImage(block.image, block.x(), block.y(), block.width(), block.height(), null);
@@ -230,7 +235,9 @@ public class Engine extends GameEngine implements ActionListener {
 	}
 	
 	public void Collisions() {
-		
+		if (level.getClass().equals(GameLevel.class)) {
+//			Physics
+		}
 	}
 
 	@Override
