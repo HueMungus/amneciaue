@@ -8,13 +8,15 @@ import java.util.ArrayList;
 public class Level {
 	ArrayList<Block> parts = new ArrayList<Block>();
 	
-	public boolean inMotion;
+	/**
+	 * This boolean is used to prevent Gravity changes whilst a block is in motion.
+	 * But otherwise can be used whenever physics for this particular level should be stopped
+	 */
+	public boolean physicsOn;
 	
 	
 	/**
-	 * Generates a level from a file
-	 * Flag sameDirectory determines whether the file is in the same directory
-	 * as the program using it.
+	 * Generates a blank level, this constructor should be deleted but couldn't be screwed
 	 * @param filename
 	 * @param sameDirectory
 	 */
@@ -28,34 +30,45 @@ public class Level {
 	
 	
 	/**
-	 * Generates a blank Level, must have a call to Load() to use
+	 * Generates blank level
 	 */
 	public Level() {
 		
 	}
 	
+	/**
+	 * Add a block to this Level's Block array
+	 * @param block
+	 */
 	public void add(Block block) {
 		this.parts.add(block);
 	}
 	
-	
 	/**
-	 * Loads contents of the file specified into this Level
-	 * Equivalent to calling the 
-	 * Level(String filename, boolean sameDirectory) constructor
-	 * @param filename
-	 * @param sameDirectory
+	 * The code to be called when this Level receives the Left key event. 
+	 * Generally called when this Level is being used and the user presses 'Left' key
 	 */
-	
 	public void Left() {
 	}
 	
+	/**
+	 * The code to be called when this Level receives the AltLeft key event. 
+	 * Generally called when this Level is being used and the user presses 'Left' key with 'Alt' down
+	 */
 	public void AltLeft() {
 	}
 	
+	/**
+	 * The code to be called when this Level receives the Right key event. 
+	 * Generally called when this Level is being used and the user presses 'Right' key
+	 */
 	public void Right() {
 	}
 	
+	/**
+	 * The code to be called when this Level receives the Alt Right key event. 
+	 * Generally called when this Level is being used and the user presses 'Right' key with 'Alt' down
+	 */
 	public void AltRight() {
 	}
 	

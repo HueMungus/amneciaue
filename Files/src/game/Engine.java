@@ -74,27 +74,16 @@ public class Engine extends GameEngine implements ActionListener {
 
 	@SuppressWarnings("serial")
 	public Engine() {
-//		Import menu.jpg
-		try {
-			menuImage = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "menu.jpg"));
-		} catch (IOException e) {
-			System.out.println("bad image read:");
-			System.out.println(System.getProperty("user.dir") + "/src/" + "menu.jpg");
-		}
-//		Import othermenu.jpg
-		try {
-			otherMenuImage = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + "othermenu.jpg"));
-		} catch (IOException e) {
-			System.out.println("bad image read:");
-			System.out.println(System.getProperty("user.dir") + "/src/" + "othermenu.jpg");
-		}
-		mFrame = new JFrame();
-		mPanel = new JPanel();
-		mFrame.setTitle("cool game");
-		mFrame.setSize(frameWidth, frameHeight);
-		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mFrame.setLocationRelativeTo(null);
-		menu = new Level() {
+		menuImage = importImage("menu.jpg");					// Import the potato jpg image
+		otherMenuImage = importImage("othermenu.jpg");			// Import the jam jpg image
+		
+		mFrame = new JFrame(); 									// Initialize the mFrame (which is the window)
+		mPanel = new JPanel();									// Initialize the mPanel (which is like the 'canvas' that goes in the window)
+		mFrame.setTitle("cool game daddy");						// #Originality
+		mFrame.setSize(frameWidth, frameHeight);				// Set the size of the window
+		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Makes the window close when you click the 'X' or right click on program tray
+		mFrame.setLocationRelativeTo(null);						// Positions window in center of screen (null means center of screen)
+		menu = new Level() {									// menu is the first Level that is visible on launch, currently a potato picture
 			@Override
 			public void Left() {
 				this.Right();
@@ -114,9 +103,9 @@ public class Engine extends GameEngine implements ActionListener {
 				level = othermenu;
 			}
 		};
-		menu.add(new Block(menuImage, 600, 600));
-		othermenu = new Level() {
-			@Override
+		menu.add(new Block(menuImage, 600, 600));				// Adds a Block object with menuImage (potato) and unique (not percent of screen size) dimensions of 600x600 pixels
+		othermenu = new Level() {								// othermenu is the second Level that currently made visible by pressing Alt+Left/Right on the menu Level
+			@Override											// It also contains a picture of jam
 			public void Left() {  }
 			@Override
 			public void Right() {  }
@@ -129,14 +118,14 @@ public class Engine extends GameEngine implements ActionListener {
 				level = menu;
 			}
 		};
-		othermenu.add(new Block(otherMenuImage, 600, 600));
-		level = menu;
+		othermenu.add(new Block(otherMenuImage, 600, 600));		// Block that contains otherMenuImage (jam) and unique dimensions of 600x600 pixels
+		level = menu;											// Make current level menu/potato Level
 //					Panel Key binds
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");
-		mPanel.getActionMap().put("alt left", new AbstractAction() {
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");		// AltLeft keybind code
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");								// Left keybind code
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");	// AltRight keybind code
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");								// Right keybind code
+		mPanel.getActionMap().put("alt left", new AbstractAction() {														// AltLeft action code (what the AltLeft keybind does)
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -146,7 +135,7 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 
 		});
-		mPanel.getActionMap().put("left", new AbstractAction() {
+		mPanel.getActionMap().put("left", new AbstractAction() {															// Left action code (what the Left keybind does)
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -155,7 +144,7 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 
 		});
-		mPanel.getActionMap().put("alt right", new AbstractAction() {
+		mPanel.getActionMap().put("alt right", new AbstractAction() {														// AltRight action code (what the AltRight keybind does)
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -164,7 +153,7 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 
 		});
-		mPanel.getActionMap().put("right", new AbstractAction() {
+		mPanel.getActionMap().put("right", new AbstractAction() {															// Right action code (what the Right keybind does)
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -173,28 +162,39 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 			
 		});
-		mFrame.add(mPanel);
-		mFrame.setVisible(true);
+		mFrame.add(mPanel);									// Adding the Panel that will contain the stuff to the window
+		mFrame.setVisible(true);							// You have to make it visible (invisible by default)
 
-		renderOn = true;
-		loop.start();
-		Graphics = (Graphics2D) mFrame.getGraphics();
+		renderOn = true;									// false by default
+		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
+		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
 
 	}
 	
 	@Override
-	public void setupWindow(int width, int height) { }
+	public void setupWindow(int width, int height) { }		// Overriden with nothing to prevent GameEngine code from being executed at all
+	
+	public Image importImage(String filename) {				// Condenses image import code into a smaller method
+		Image bob = null;
+		try {
+			bob = ImageIO.read(new File(System.getProperty("user.dir") + "/src/" + filename));
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Error importing image \"" + filename + "\"");
+		}
+		return bob;
+	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {				// Everything still needs a main method
 		Engine steve = new Engine();
-		steve.getTime();
+		steve.getTime();									// This serves no purpose except getting rid of the 'steve not used locally' warning
 	}
 
 	@Override
-	public void update(double dt) {	}
+	public void update(double dt) {	}						// Overriden from GameEngine, this method is abstract so must be overriden
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {			// Main loop
 //		System.out.println("Updating...");
 		if (physicsOn) {
 //			System.out.println("Physics-ing...");
@@ -217,9 +217,7 @@ public class Engine extends GameEngine implements ActionListener {
 	public void Render() {
 		//		Rendering
 		//		Flush screen
-		Graphics.
-		clearRect(0, 0, 
-				mFrame.getWidth(), mFrame.getHeight());
+		Graphics.clearRect(0, 0, mFrame.getWidth(), mFrame.getHeight());
 
 		//		Render Blocks
 		for (Block block : level.parts) {
