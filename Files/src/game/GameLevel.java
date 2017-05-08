@@ -9,6 +9,14 @@ public class GameLevel extends Level {
 	ArrayList<MoveBlock> moveblocks;
 	ArrayList<StaticBlock> staticblocks;
 	Block focus;
+	public Vec2 Gravity = new Vec2(0.0f,9.81f);
+	public boolean verticalGravity = true;
+	
+	/**
+	 * This boolean is used to prevent Gravity changes whilst a block is in motion.
+	 * But otherwise can be used whenever physics for this particular level should be stopped
+	 */
+	public boolean physicsOn;
 	
 	public GameLevel(MoveBlock[] moveblocks, StaticBlock[] staticblocks) {
 		for (MoveBlock mblock : moveblocks) {

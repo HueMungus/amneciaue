@@ -9,22 +9,11 @@ public class Level {
 	ArrayList<Block> parts = new ArrayList<Block>();
 	
 	/**
-	 * This boolean is used to prevent Gravity changes whilst a block is in motion.
-	 * But otherwise can be used whenever physics for this particular level should be stopped
-	 */
-	public boolean physicsOn;
-	
-	
-	/**
 	 * Generates a blank level, this constructor should be deleted but couldn't be screwed
 	 * @param filename
 	 * @param sameDirectory
 	 */
 	public Level(String filename, boolean sameDirectory) {
-		
-		
-		
-		
 		
 	}
 	

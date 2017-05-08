@@ -41,35 +41,27 @@ public class Engine extends GameEngine implements ActionListener {
 	// Goes through each array at the end of update loop
 	ArrayList<Block> toAdd = new ArrayList<Block>();
 	ArrayList<Block> toRemove = new ArrayList<Block>();
-	
-	/**
-	 * MoveBlock Color
-	 */
+//	Color stuff
 	public static Color MBColor = Color.ORANGE;
-	/**
-	 * StaticBlock Color
-	 */
 	public static Color SBColor = Color.DARK_GRAY;
-	/**
-	 * Default Block Color
-	 */
-	public static Color BColor = Color.CYAN;
+	public static Color BColor = Color.LIGHT_GRAY;
 	Timer loop = new Timer(50, this);
+//	Level stuff
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
 	Level level;
 	Level menu;
 	Level othermenu;
+//	Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
-	static int frameWidth = 600, frameHeight = 600;
 	
+//	Window stuff
+	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
 	JPanel mPanel;
 	Graphics2D Graphics;
-	
+//	Image stuff
 	Image menuImage, otherMenuImage;
-
-	int windowWidth, windowHeight;
 
 	@SuppressWarnings("serial")
 	public Engine() {
@@ -241,11 +233,78 @@ public class Engine extends GameEngine implements ActionListener {
 		// Checking if the current level of type Level is the same object as the current level of type GameLevel (yeah its annoying)
 		if (level.getClass().equals(GameLevel.class)) {
 //			Physics
+//			First check if the current level's physicsOn boolean is true, otherwise do nothing (inMotion will be set to true when a block is supposed to fall)
+			if (gLevel.physicsOn) {
+//				First move the focused block by the gravity vector
+				gLevel.focus.pos.x += gLevel.Gravity.x;
+				gLevel.focus.pos.y += gLevel.Gravity.y;
+//				Second check other objects
+				for (Block A : gLevel.parts) {
+					if ()
+				}
+				
+//				Lastly check world bounds
+//				Only check vertical (top & bottom) world bounds if verticalGravity is true, otherwise check horizontal (left & right) world bounds
+				if (gLevel.verticalGravity) {
+					if ()
+					
+				} else {
+					
+					
+				}
+			}
 		}
 	}
 
 	@Override
 	public void paintComponent() {  } //Overriden from GameEngine, method is abstract so must be overriden
-
-
+	
+//	Used to test if one block is inside another
+	public boolean AABBTest( Sprite.Manifold m ) {
+		
+		  // Vector from A to B
+		  Vec2 n = m.B.min.minus(m.A.min);
+		  
+		  // Calculate half extents along x axis for each object
+		  float a_extent = (m.A.max.x - m.A.min.x) / 2;
+		  float b_extent = (m.B.max.x - m.B.min.x) / 2;
+		  
+		  // Calculate overlap on x axis
+		  float x_overlap = a_extent + b_extent - Math.abs( n.x );
+		  
+		  // SAT test on  axis
+		  if (x_overlap > 0)
+		  {
+		    // Calculate overlap on y axis
+		    float y_overlap = a_extent + b_extent - Math.abs( n.y );
+		  
+		    // SAT test on y axis
+		    if(y_overlap > 0)
+		    {
+		      // Find out which axis is axis of least penetration
+		      if(x_overlap > y_overlap)
+		      {
+		        // Point towards B knowing that n points from A to B
+		        if(n.x < 0) {
+		          m.normal = new Vec2( -1, 0 );
+		        } else {
+		          m.normal = new Vec2( 1, 0 );
+		        m.penetration = x_overlap;
+		        return true;
+		        }
+		      }
+		      else
+		      {
+		        // Point toward B knowing that n points from A to B
+		        if(n.y < 0)
+		          m.normal = new Vec2( 0, -1 );
+		        else
+		          m.normal = new Vec2( 0, 1 );
+		        m.penetration = y_overlap;
+		        return true;
+		      }
+		    }
+		  }
+		return false;
+	}
 }
