@@ -42,19 +42,19 @@ public class Engine extends GameEngine implements ActionListener {
 	ArrayList<Block> toAdd = new ArrayList<Block>();
 	ArrayList<Block> toRemove = new ArrayList<Block>();
 //	Color stuff
-	public static Color MBColor = Color.ORANGE;
+	public static Color MBColor = Color.LIGHT_GRAY;
 	public static Color SBColor = Color.DARK_GRAY;
-	public static Color BColor = Color.LIGHT_GRAY;
-	Timer loop = new Timer(50, this);
+	public static Color BColor = Color.PINK;
+	public static Color FColor = Color.BLUE;
 //	Level stuff
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
 	Level level;
 	Level menu;
 	Level othermenu;
-//	Physics stuff
+//	Render/Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
-	
+	Timer loop = new Timer(50, this);
 //	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
@@ -70,7 +70,7 @@ public class Engine extends GameEngine implements ActionListener {
 		
 		mFrame = new JFrame(); 									// Initialize the mFrame (which is the window)
 		mPanel = new JPanel();									// Initialize the mPanel (which is like the 'canvas' that goes in the window)
-		mFrame.setTitle("cool game daddy");						// #Originality
+		mFrame.setTitle("PewDiePieSimulator");						// #Originality
 		mFrame.setSize(frameWidth, frameHeight);				// Set the size of the window
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Makes the window close when you click the 'X' or right click on program tray
 		mFrame.setLocationRelativeTo(null);						// Positions window in center of screen (null means center of screen)
@@ -153,12 +153,14 @@ public class Engine extends GameEngine implements ActionListener {
 			}
 			
 		});
+		mPanel.setDoubleBuffered(true);
 		mFrame.add(mPanel);									// Adding the Panel that will contain the stuff to the window
 		mFrame.setVisible(true);							// You have to make it visible (invisible by default)
 
 		renderOn = true;									// false by default
 		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
 		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
+		Graphics.setBackground(Color.black);
 		
 		for (Block bob : testLevel.parts) {
 			System.out.println(bob.x() + ", " + bob.y() + " with dimensions " + bob.width() + ", " + bob.height());
@@ -222,9 +224,9 @@ public class Engine extends GameEngine implements ActionListener {
 			} else {
 //				Otherwise it should be using a color, so draw a rectangle of that color
 				Graphics.setColor(block.color);
-				System.out.println("Rendering a block with color: " + block.color.toString());
+//				System.out.println("Rendering a block with color: " + block.color.toString());
 				Graphics.fillRect(block.x(), block.y(), block.width(), block.height());
-				System.out.println("Using coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
+//				System.out.println("Using coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
 			}
 		}
 	}
