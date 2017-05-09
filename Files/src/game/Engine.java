@@ -238,11 +238,34 @@ public class Engine extends GameEngine implements ActionListener {
 //			First check if the current level's physicsOn boolean is true, otherwise do nothing (inMotion will be set to true when a block is supposed to fall)
 			if (gLevel.physicsOn) {
 //				First move the focused block by the gravity vector
-				gLevel.focus.pos.x += gLevel.Gravity.x;
-				gLevel.focus.pos.y += gLevel.Gravity.y;
+				gLevel.focus.pos = gLevel.focus.pos.add(gLevel.Gravity);
 //				Second check other objects
+				Vec2 penetration;
 				for (Block A : gLevel.parts) {
-					if ()
+//					Will be null if no collision
+					if ((penetration = FocusCollidesWith(A)) != null) {
+//						Resolve
+						if (penetration.x > 0) {
+//							If penetration is on the X
+							if (A.pos.x > gLevel.focus.pos.x) {
+//								If A is further on the X than B (focus)
+								gLevel.focus.pos = gLevel.focus.pos.add(penetration);
+							} else {
+//								If B (focus) is further on the X than B
+								gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
+							}
+						} else {
+//							If penetration is on the Y
+							if (A.pos.y > gLevel.focus.pos.y) {
+//								If A is further on the y than B (focus)
+								gLevel.focus.pos = gLevel.focus.pos.add(penetration);
+							} else {
+//								If B (focus) is further on the y than B
+								gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
+							}
+						}
+						return;
+					}
 				}
 				
 //				Lastly check world bounds
@@ -286,51 +309,47 @@ public class Engine extends GameEngine implements ActionListener {
 	public void paintComponent() {  } //Overriden from GameEngine, method is abstract so must be overriden
 	
 //	Used to test if one block is inside another
-	public boolean AABBTest( Sprite.Manifold m ) {
+//	Returns null if they didn't, otherwise returns movement vector that can be used to move the block out
+	public Vec2 FocusCollidesWith( Block A ) {
+		Block B = gLevel.focus;
+		Vec2 Amax = new Vec2(A.pos.x + A.width(), A.pos.y + A.height());
+		Vec2 Bmax = new Vec2(B.pos.x + B.width(), B.pos.y + B.height());
 		
-		  // Vector from A to B
-		  Vec2 n = m.B.min.minus(m.A.min);
-		  
-		  // Calculate half extents along x axis for each object
-		  float a_extent = (m.A.max.x - m.A.min.x) / 2;
-		  float b_extent = (m.B.max.x - m.B.min.x) / 2;
-		  
-		  // Calculate overlap on x axis
-		  float x_overlap = a_extent + b_extent - Math.abs( n.x );
-		  
-		  // SAT test on  axis
-		  if (x_overlap > 0)
-		  {
-		    // Calculate overlap on y axis
-		    float y_overlap = a_extent + b_extent - Math.abs( n.y );
-		  
-		    // SAT test on y axis
-		    if(y_overlap > 0)
-		    {
-		      // Find out which axis is axis of least penetration
-		      if(x_overlap > y_overlap)
-		      {
-		        // Point towards B knowing that n points from A to B
-		        if(n.x < 0) {
-		          m.normal = new Vec2( -1, 0 );
-		        } else {
-		          m.normal = new Vec2( 1, 0 );
-		        m.penetration = x_overlap;
-		        return true;
-		        }
-		      }
-		      else
-		      {
-		        // Point toward B knowing that n points from A to B
-		        if(n.y < 0)
-		          m.normal = new Vec2( 0, -1 );
-		        else
-		          m.normal = new Vec2( 0, 1 );
-		        m.penetration = y_overlap;
-		        return true;
-		      }
-		    }
-		  }
-		return false;
+		// Vector from A to B
+		Vec2 n = B.pos.minus(A.pos);
+
+		// Calculate half extents along x axis for each object
+		float a_extent = (Amax.x - A.pos.x) / 2;
+		float b_extent = (Bmax.x - B.pos.x) / 2;
+
+		// Calculate overlap on x axis
+		float x_overlap = a_extent + b_extent - Math.abs( n.x ); 
+
+		// SAT test on  axis
+		if (x_overlap > 0)
+		{
+			// Calculate overlap on y axis
+			float y_overlap = a_extent + b_extent - Math.abs( n.y );
+
+			// SAT test on y axis
+			if(y_overlap > 0)
+			{
+				// Find out which axis is axis of least penetration
+				if(x_overlap > y_overlap)
+				{
+					// Point towards B knowing that n points from A to B
+					if(!(n.x < 0)) {
+						return new Vec2(x_overlap, 0);
+					}
+				}
+				else
+				{
+					// Point toward B knowing that n points from A to B
+					if(!(n.y < 0))
+					return new Vec2(0, y_overlap);
+				}
+			}
+		}
+		return null;
 	}
 }
