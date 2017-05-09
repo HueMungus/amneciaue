@@ -248,10 +248,34 @@ public class Engine extends GameEngine implements ActionListener {
 //				Lastly check world bounds
 //				Only check vertical (top & bottom) world bounds if verticalGravity is true, otherwise check horizontal (left & right) world bounds
 				if (gLevel.verticalGravity) {
-					if ()
-					
+//					if the focused block's y position is less than 0
+//					turn physics off, set its y position to 0, and return
+					if (gLevel.focus.pos.y < 0) {
+						gLevel.physicsOn = false;
+						gLevel.focus.pos.y = 0;
+						return;
+					}
+//					if the focused block's x position + its width is greater than the window's size
+//					turn physics off, set its position to the window's width - focused block's width, and return
+					if (gLevel.focus.pos.y + gLevel.focus.height() > mFrame.getHeight()) {
+						gLevel.physicsOn = false;
+						gLevel.focus.pos.y = mFrame.getHeight() - gLevel.focus.height();
+						return;
+					}
 				} else {
-					
+//					if the focused block's x position is less than 0
+//					turn physics off, set its position to 0, and return
+					if (gLevel.focus.pos.x < 0) {
+						gLevel.physicsOn = false;
+						gLevel.focus.pos.x = 0;
+						return;
+					}
+//					if the focused block's x position + its width is greater than the window's size
+//					turn physics off, set its position to the window's width - focused block's width, and return
+					if (gLevel.focus.pos.x + gLevel.focus.width() > mFrame.getWidth()) {
+						gLevel.physicsOn = false;
+						gLevel.focus.pos.x = mFrame.getWidth() - gLevel.focus.width();
+					}
 					
 				}
 			}
