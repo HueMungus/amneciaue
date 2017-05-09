@@ -70,7 +70,7 @@ public class Engine extends GameEngine implements ActionListener {
 		
 		mFrame = new JFrame(); 									// Initialize the mFrame (which is the window)
 		mPanel = new JPanel();									// Initialize the mPanel (which is like the 'canvas' that goes in the window)
-		mFrame.setTitle("yessss daddy ");						// #Originality
+		mFrame.setTitle("yessss daddy fuk me in the asswhole");						// #Originality
 		mFrame.setSize(frameWidth, frameHeight);				// Set the size of the window
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Makes the window close when you click the 'X' or right click on program tray
 		mFrame.setLocationRelativeTo(null);						// Positions window in center of screen (null means center of screen)
