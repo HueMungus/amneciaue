@@ -24,6 +24,15 @@ public class Block {
 		this.pos = new Vec2(x, y);
 	}
 	
+	public Block(int x, int y, Color color) {
+		this(x,y);
+		this.color = color;
+	}
+	
+	public Block(Vec2 pos, Color color) {
+		this((int)pos.x,(int)pos.y,color);
+	}
+	
 	public Block(int x, int y, Image image) {
 		this(x,y);
 		if (image != null) {

@@ -14,7 +14,7 @@ public class GameLevel extends Level {
 	ArrayList<StaticBlock> staticBlocks;
 	public boolean verticalGravity = true;
 	
-	public Image coolImage = Engine.importImage("60.jpg");
+//	public Image coolImage = Engine.importImage("60.jpg");
 	
 	/**
 	 * This boolean is used to prevent Gravity changes whilst a block is in motion.
@@ -24,22 +24,22 @@ public class GameLevel extends Level {
 	
 	public GameLevel(MoveBlock[] moveblocks, StaticBlock[] staticblocks) {
 		for (MoveBlock mblock : moveblocks) {
-			this.parts.add(mblock);
+			add(mblock);
 			this.moveblocks.add(mblock);
 		}
 		for (StaticBlock sblock : staticblocks) {
-			this.parts.add(sblock);
+			add(sblock);
 			this.staticBlocks.add(sblock);
 		}
 		physicsOn = false;
 	}
 	
-	public GameLevel(ArrayList<Block> parts, ArrayList<MoveBlock> moveblocks, ArrayList<StaticBlock> staticblocks) {
-		this.parts = parts;
-		this.moveblocks = moveblocks;
-		this.staticBlocks = staticblocks;
-		physicsOn = false;
-	}
+//	public GameLevel(ArrayList<Block> parts, ArrayList<MoveBlock> moveblocks, ArrayList<StaticBlock> staticblocks) {
+//		this.pparts = parts;
+//		this.moveblocks = moveblocks;
+//		this.staticBlocks = staticblocks;
+//		physicsOn = false;
+//	}
 	
 	public GameLevel(String filename, boolean sameDirectory) {
 		Load(filename, sameDirectory);
@@ -79,7 +79,7 @@ public class GameLevel extends Level {
 							pos.x = pos.y = 0;
 						}
 						StaticBlock bob = new StaticBlock((int) pos.x,(int) pos.y);
-						parts.add(bob);
+						add(bob);
 						staticBlocks.add(bob);
 						System.out.println("Made a staticblock with position: " + pos.x + ", " + pos.y);
 						break;
@@ -99,10 +99,20 @@ public class GameLevel extends Level {
 							vel.x = vel.y = 0.0f;
 						}
 						MoveBlock steve = new MoveBlock(pos, vel);
-						parts.add(steve);
+						add(steve);
 						moveblocks.add(steve);
 						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
 						break;
+					case "goal" :
+						if (words.length > 2) {
+							pos.x = Integer.parseInt(words[1]);
+							pos.y = Integer.parseInt(words[2]);
+						} else {
+							pos.x = pos.y = 0;
+						}
+						Block john = new Block(pos, Engine.GColor);
+						addv(john);
+						System.out.println("Made a goal block with position: " + pos.toString());
 					default:
 						System.out.println("Unknown block type: " + words[0] + "\"");
 						break;
@@ -187,12 +197,12 @@ public class GameLevel extends Level {
 	}
 	
 	public void add(MoveBlock moveblock) {
-		this.parts.add(moveblock);
+		super.add(moveblock);
 		this.moveblocks.add(moveblock);
 	}
 	
 	public void add(StaticBlock staticblock) {
-		this.parts.add(staticblock);
+		super.add(staticblock);
 		this.staticBlocks.add(staticblock);
 	}
 
@@ -203,7 +213,7 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltLeft() {
-		this.Gravity.x = -9.81f;
+		this.Gravity.x = -15.0f;
 		this.Gravity.y = 0;
 		this.verticalGravity = false;
 		System.out.println("Gravity: " + Gravity.toString());
@@ -216,7 +226,7 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltRight() {
-		this.Gravity.x = 9.81f;
+		this.Gravity.x = 15.0f;
 		this.Gravity.y = 0;
 		this.verticalGravity = false;
 		System.out.println("Gravity: " + Gravity.toString());
@@ -225,7 +235,7 @@ public class GameLevel extends Level {
 	@Override
 	public void AltUp() {
 		this.Gravity.x = 0;
-		this.Gravity.y = -9.81f;
+		this.Gravity.y = -15.0f;
 		this.verticalGravity = true;
 		System.out.println("Gravity: " + Gravity.toString());
 	}
@@ -233,7 +243,7 @@ public class GameLevel extends Level {
 	@Override
 	public void AltDown() {
 		this.Gravity.x = 0;
-		this.Gravity.y = 9.81f;
+		this.Gravity.y = 15.0f;
 		this.verticalGravity = true;
 		System.out.println("Gravity: " + Gravity.toString());
 	}

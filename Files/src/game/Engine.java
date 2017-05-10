@@ -28,6 +28,7 @@ public class Engine extends GameEngine implements ActionListener {
 	public static Color SBColor = Color.GRAY;
 	public static Color BColor = Color.PINK;
 	public static Color FColor = Color.RED;
+	public static Color GColor = Color.LIGHT_GRAY;
 //	Level stuff
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
@@ -37,7 +38,7 @@ public class Engine extends GameEngine implements ActionListener {
 //	Render/Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	long prevdt = System.currentTimeMillis(), dt = 0;
-	Timer loop = new Timer(50, this);
+	Timer loop = new Timer(25, this);
 //	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
@@ -59,7 +60,7 @@ public class Engine extends GameEngine implements ActionListener {
 				System.out.println("Mouse clicked");
 				if (gLevel != null) {
 					Vec2 mousePos = new Vec2(e.getX(), e.getY());
-					for (Block A : gLevel.parts) {
+					for (Block A : gLevel.pparts) {
 						if (mousePos.isWithin(A.pos, new Vec2(A.pos.x + A.width(), A.pos.y + A.height()))) {
 							if (A.getClass() == MoveBlock.class) {
 								gLevel.focus = (MoveBlock) A;
@@ -175,6 +176,7 @@ public class Engine extends GameEngine implements ActionListener {
 				System.out.println("Space");
 				if (gLevel != null) {
 					System.out.println("Physics: on, focus at: " + gLevel.focus.pos.toString());
+					System.out.println("Gravity is: " + gLevel.Gravity.toString());
 					gLevel.physicsOn = true;
 				}
 			}
@@ -201,7 +203,7 @@ public class Engine extends GameEngine implements ActionListener {
 		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
 		Graphics.setBackground(Color.black);
 		
-		for (Block bob : testLevel.parts) {
+		for (Block bob : testLevel.pparts) {
 			System.out.println("Block with " +bob.x() + ", " + bob.y() + " with dimensions " + bob.width() + ", " + bob.height());
 		}
 
@@ -230,7 +232,7 @@ public class Engine extends GameEngine implements ActionListener {
 		Graphics.clearRect(0, 0, mFrame.getWidth(), mFrame.getHeight());
 
 		//		Render Blocks
-		for (Block block : level.parts) {
+		for (Block block : level.vparts) {
 			if (block.hasImage) {
 //				If it has an image, draw it, I'm assuming if hasImage is true, its Image won't be null
 				Graphics.drawImage(block.image, block.x(), block.y(), block.width(), block.height(), null);
@@ -255,12 +257,14 @@ public class Engine extends GameEngine implements ActionListener {
 //			Physics
 //			First check if the current level's physicsOn boolean is true, otherwise do nothing (physicsOn will be set to true when a block is supposed to fall)
 			if (gLevel.physicsOn) {
+//				System.out.println("Physics Check");
 //				First move the focused block by the gravity vector multiplied by dt (and move the block)
 				focus.v = focus.v.add(gLevel.Gravity.mult(((float) dt) / 1000));
+				System.out.println("Focus's velocity is: " + focus.v.toString() + ", Gravity is: " + gLevel.Gravity.toString() + " and dt is: " + dt);
 				focus.pos = focus.pos.add(focus.v);
 //				Second check other objects
 				Vec2 penetration;
-				for (Block A : gLevel.parts) {
+				for (Block A : gLevel.pparts) {
 //					Will be null if no collision
 					if ((penetration = FocusCollidesWith(A)) != null) {
 						System.out.println("Resolving Collision...");
@@ -350,7 +354,7 @@ public class Engine extends GameEngine implements ActionListener {
 		}
 		Vec2 Amax = new Vec2(A.pos.x + A.width(), A.pos.y + A.height());
 		Vec2 Bmax = new Vec2(B.pos.x + B.width(), B.pos.y + B.height());
-		System.out.println(Amax.toString() + " and " + Bmax.toString());
+//		System.out.println(Amax.toString() + " and " + Bmax.toString());
 		
 		// Vector from A to B
 		Vec2 n = B.pos.minus(A.pos);
