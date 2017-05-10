@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class GameLevel extends Level {
 	ArrayList<MoveBlock> moveblocks;
 	ArrayList<StaticBlock> staticblocks;
-	Block focus;
+	MoveBlock focus;
 	public Vec2 Gravity = new Vec2(0.0f,9.81f);
 	public boolean verticalGravity = true;
 	
