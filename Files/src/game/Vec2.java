@@ -51,8 +51,12 @@ public class Vec2 {
 		return this;
 	}
 	
-	public Vec2 mult(float d) {
+	public Vec2 multRound(float d) {
 		return new Vec2(Math.round(this.x * d),Math.round(this.y * d));
+	}
+	
+	public Vec2 mult(float d) {
+		return new Vec2(this.x * d, this.y * d);
 	}
 	
 	public boolean isWithin(Vec2 A, Vec2 B) {

@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,7 +9,8 @@ public class GameLevel extends Level {
 	ArrayList<MoveBlock> moveblocks;
 	ArrayList<StaticBlock> staticblocks;
 	MoveBlock focus;
-	public Vec2 Gravity = new Vec2(0.0f,15.0f);
+	public static float GravityConstant = 9.81f;
+	public Vec2 Gravity = new Vec2(0.0f, GravityConstant);
 	ArrayList<StaticBlock> staticBlocks;
 	public boolean verticalGravity = true;
 	
@@ -61,11 +61,7 @@ public class GameLevel extends Level {
 		}
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
-			if (reader != null) {
-				System.out.println("Reader is not null");
-			} else {
-				System.out.println("Reader is null");
-			}
+			System.out.println("Reader is not null");
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] words = line.split(" ");
@@ -213,10 +209,12 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltLeft() {
-		this.Gravity.x = -15.0f;
-		this.Gravity.y = 0;
-		this.verticalGravity = false;
-		System.out.println("Gravity: " + Gravity.toString());
+		if (!physicsOn) {
+			this.Gravity.x = -1 * GravityConstant;
+			this.Gravity.y = 0;
+			this.verticalGravity = false;
+			System.out.println("Gravity: " + Gravity.toString());
+		}
 	}
 
 	@Override
@@ -226,26 +224,32 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltRight() {
-		this.Gravity.x = 15.0f;
-		this.Gravity.y = 0;
-		this.verticalGravity = false;
-		System.out.println("Gravity: " + Gravity.toString());
+		if (!physicsOn) {
+			this.Gravity.x = GravityConstant;
+			this.Gravity.y = 0;
+			this.verticalGravity = false;
+			System.out.println("Gravity: " + Gravity.toString());
+		}
 	}
 	
 	@Override
 	public void AltUp() {
-		this.Gravity.x = 0;
-		this.Gravity.y = -15.0f;
-		this.verticalGravity = true;
-		System.out.println("Gravity: " + Gravity.toString());
+		if (!physicsOn) {
+			this.Gravity.x = 0;
+			this.Gravity.y = -1 * GravityConstant;
+			this.verticalGravity = true;
+			System.out.println("Gravity: " + Gravity.toString());
+		}
 	}
 	
 	@Override
 	public void AltDown() {
-		this.Gravity.x = 0;
-		this.Gravity.y = 15.0f;
-		this.verticalGravity = true;
-		System.out.println("Gravity: " + Gravity.toString());
+		if (!physicsOn) {
+			this.Gravity.x = 0;
+			this.Gravity.y = GravityConstant;
+			this.verticalGravity = true;
+			System.out.println("Gravity: " + Gravity.toString());
+		}
 	}
 	
 }

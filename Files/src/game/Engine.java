@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -38,7 +37,7 @@ public class Engine extends GameEngine implements ActionListener {
 //	Render/Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	long prevdt = System.currentTimeMillis(), dt = 0;
-	Timer loop = new Timer(25, this);
+	Timer loop = new Timer(10, this);
 //	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
@@ -49,11 +48,11 @@ public class Engine extends GameEngine implements ActionListener {
 
 	@SuppressWarnings("serial")
 	public Engine() {
-		menuImage = importImage("menu.jpg");					// Import the potato jpg image
-		otherMenuImage = importImage("othermenu.jpg");			// Import the jam jpg image
+		menuImage = importImage("menu.jpg");
+		otherMenuImage = importImage("othermenu.jpg");
 		
-		mFrame = new JFrame(); 									// Initialize the mFrame (which is the window)
-		mPanel = new JPanel();									// Initialize the mPanel (which is like the 'canvas' that goes in the window)
+		mFrame = new JFrame();
+		mPanel = new JPanel();
 		mPanel.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -83,12 +82,12 @@ public class Engine extends GameEngine implements ActionListener {
 			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
-		mFrame.setTitle("PewDiePieSimulator");						// #Originality
-		mFrame.setSize(frameWidth, frameHeight);				// Set the size of the window
-		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Makes the window close when you click the 'X' or right click on program tray
-		mFrame.setLocationRelativeTo(null);						// Positions window in center of screen (null means center of screen)
+		mFrame.setTitle("PewDiePieSimulator");
+		mFrame.setSize(frameWidth, frameHeight);
+		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mFrame.setLocationRelativeTo(null);
 		mFrame.setUndecorated(true);
-		menu = new Level() {									// menu is the first Level that is visible on launch, currently a potato picture
+		menu = new Level() {
 			@Override
 			public void Left() {
 				this.Right();
@@ -108,9 +107,9 @@ public class Engine extends GameEngine implements ActionListener {
 				level = othermenu;
 			}
 		};
-		menu.add(new Block(menuImage, 600, 600));				// Adds a Block object with menuImage (potato) and unique (not percent of screen size) dimensions of 600x600 pixels
-		othermenu = new Level() {								// othermenu is the second Level that currently made visible by pressing Alt+Left/Right on the menu Level
-			@Override											// It also contains a picture of jam
+		menu.add(new Block(menuImage, 600, 600));
+		othermenu = new Level() {
+			@Override
 			public void Left() {  }
 			@Override
 			public void Right() {  }
@@ -123,45 +122,38 @@ public class Engine extends GameEngine implements ActionListener {
 				level = menu;
 			}
 		};
-		othermenu.add(new Block(otherMenuImage, 600, 600));		// Block that contains otherMenuImage (jam) and unique dimensions of 600x600 pixels
-		level = menu;											// Make current level menu/potato Level
+		othermenu.add(new Block(otherMenuImage, 600, 600));
+		level = menu;
 //					Panel Key binds
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");		// AltLeft keybind code
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");								// Left keybind code
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");	// AltRight keybind code
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");								// Right keybind code
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "space");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK, true), "alt up");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK, true), "alt down");
-		mPanel.getActionMap().put("alt left", new AbstractAction() {														// AltLeft action code (what the AltLeft keybind does)
-
+		mPanel.getActionMap().put("alt left", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				level.AltLeft();
 				System.out.println("AltLeft");
-				
 			}
-
 		});
-		mPanel.getActionMap().put("left", new AbstractAction() {															// Left action code (what the Left keybind does)
-
+		mPanel.getActionMap().put("left", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				level.Left();
 				System.out.println("Left");
 			}
-
 		});
-		mPanel.getActionMap().put("alt right", new AbstractAction() {														// AltRight action code (what the AltRight keybind does)
-
+		mPanel.getActionMap().put("alt right", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				level.AltRight();
 				System.out.println("AltRight");
 			}
-
 		});
-		mPanel.getActionMap().put("right", new AbstractAction() {															// Right action code (what the Right keybind does)
+		mPanel.getActionMap().put("right", new AbstractAction() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -195,8 +187,9 @@ public class Engine extends GameEngine implements ActionListener {
 				level.AltDown();
 			}
 		});
-		mFrame.add(mPanel);									// Adding the Panel that will contain the stuff to the window
-		mFrame.setVisible(true);							// You have to make it visible (invisible by default)
+		mFrame.add(mPanel);
+		mFrame.setVisible(true);
+		mPanel.setDoubleBuffered(true);
 
 		renderOn = true;									// false by default
 		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
@@ -259,8 +252,8 @@ public class Engine extends GameEngine implements ActionListener {
 			if (gLevel.physicsOn) {
 //				System.out.println("Physics Check");
 //				First move the focused block by the gravity vector multiplied by dt (and move the block)
-				focus.v = focus.v.add(gLevel.Gravity.mult(((float) dt) / 1000));
-				System.out.println("Focus's velocity is: " + focus.v.toString() + ", Gravity is: " + gLevel.Gravity.toString() + " and dt is: " + dt);
+				focus.v = focus.v.add(gLevel.Gravity.mult(((float) dt) / 1000.0f));
+				System.out.println("Focus's velocity is: " + focus.v.toString() + ", Gravity is: " + gLevel.Gravity.toString() + " and dt is: " + ((float)dt));
 				focus.pos = focus.pos.add(focus.v);
 //				Second check other objects
 				Vec2 penetration;
