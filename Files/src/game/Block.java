@@ -9,7 +9,8 @@ public class Block {
 	public float uniqueWidth, uniqueHeight;
 	public Image image;
 	Color color = Engine.BColor;
-	public static float bWidth = 60, bHeight = 60;
+	public static int ratio = 10;
+	public static float bWidth = Engine.frameWidth / ratio, bHeight = Engine.frameHeight / ratio;
 	
 	Vec2 pos; // dim = dimension, width and height are stored here
 	

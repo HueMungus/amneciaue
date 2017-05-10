@@ -59,4 +59,9 @@ public class Vec2 {
 		return Math.round((A.x * B.x) + (A.y * B.y));
 	}
 	
+	@Override
+	public String toString() {
+		return this.x + ", " + this.y;
+	}
+	
 }

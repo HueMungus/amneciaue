@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -10,7 +11,10 @@ public class GameLevel extends Level {
 	ArrayList<StaticBlock> staticblocks;
 	MoveBlock focus;
 	public Vec2 Gravity = new Vec2(0.0f,9.81f);
+	ArrayList<StaticBlock> staticBlocks;
 	public boolean verticalGravity = true;
+	
+	public Image coolImage = Engine.importImage("60.jpg");
 	
 	/**
 	 * This boolean is used to prevent Gravity changes whilst a block is in motion.
@@ -25,7 +29,7 @@ public class GameLevel extends Level {
 		}
 		for (StaticBlock sblock : staticblocks) {
 			this.parts.add(sblock);
-			this.staticblocks.add(sblock);
+			this.staticBlocks.add(sblock);
 		}
 		physicsOn = false;
 	}
@@ -33,7 +37,7 @@ public class GameLevel extends Level {
 	public GameLevel(ArrayList<Block> parts, ArrayList<MoveBlock> moveblocks, ArrayList<StaticBlock> staticblocks) {
 		this.parts = parts;
 		this.moveblocks = moveblocks;
-		this.staticblocks = staticblocks;
+		this.staticBlocks = staticblocks;
 		physicsOn = false;
 	}
 	
@@ -44,8 +48,15 @@ public class GameLevel extends Level {
 	
 	public void Load(String filename, boolean sameDirectory) {
 		File file;
-		staticblocks = new ArrayList<StaticBlock>();
+		staticBlocks = new ArrayList<StaticBlock>();
 		moveblocks = new ArrayList<MoveBlock>();
+//		mBlockColumns = new ArrayList<ArrayList<MoveBlock>>();
+//		for (int i = 0; i < Block.ratio; ++i) {
+//			mBlockColumns.add(new ArrayList<MoveBlock>());
+//			for (int j = 0; j < Block.ratio; ++j) {
+//				mBlockColumns.get(i).add(new MoveBlock());
+//			}
+//		}
 		Vec2 pos = new Vec2();
 		Vec2 vel = new Vec2();
 		if (sameDirectory) {
@@ -76,7 +87,7 @@ public class GameLevel extends Level {
 						}
 						StaticBlock bob = new StaticBlock((int) pos.x,(int) pos.y);
 						parts.add(bob);
-						staticblocks.add(bob);
+						staticBlocks.add(bob);
 						System.out.println("Made a staticblock with position: " + pos.x + ", " + pos.y);
 						break;
 					case "move":
@@ -97,8 +108,37 @@ public class GameLevel extends Level {
 						MoveBlock steve = new MoveBlock(pos, vel);
 						parts.add(steve);
 						moveblocks.add(steve);
+//						mBlockColumns.get((int)(pos.x / 60)).set((int)(pos.y / 60), steve);
 						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
 						break;
+//					case "move":
+//						//					Set the position vector if specified in the file
+//						if (words.length > 2) {
+//							pos.x = Integer.parseInt(words[1]);
+//							pos.y = Integer.parseInt(words[2]);
+//						} else {
+//							pos.x = pos.y = 0;
+//						}
+//						//					set the velocity vector if specified in the file
+//						if (words.length > 4) {
+//							vel.x = (float) Double.parseDouble(words[3]);
+//							vel.y = (float) Double.parseDouble(words[4]);
+//						} else {
+//							vel.x = vel.y = 0.0f;
+//						}
+//						MoveBlock steve = new MoveBlock(pos, vel, coolImage);
+//						parts.add(steve);
+//						moveblocks.add(steve);
+////						mBlockColumns.get((int)(pos.x / 60)).set((int)(pos.y / 60), steve);
+//						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
+//						break;
+//					case "custom" :
+////						Go through custom commands
+//						if (words.length > 3) {
+//							if (words[1] == "dimensions") {
+//								
+//							}
+//						}
 					default:
 						System.out.println("Unknown block type: " + words[0] + "\"");
 						break;
@@ -106,6 +146,7 @@ public class GameLevel extends Level {
 				}
 			}
 			reader.close();
+			focus = moveblocks.get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.print("Exception caught in Load Method with Load(" + filename + ", " + sameDirectory + ") ID = ");
@@ -182,7 +223,7 @@ public class GameLevel extends Level {
 	
 	public void add(StaticBlock staticblock) {
 		this.parts.add(staticblock);
-		this.staticblocks.add(staticblock);
+		this.staticBlocks.add(staticblock);
 	}
 
 	@Override
@@ -192,7 +233,8 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltLeft() {
-//		Rotate gravity 90 degrees ( pi/2 ) clockwise
+		this.Gravity.x = -98.1f;
+		this.Gravity.y = 0;
 		
 	}
 
@@ -203,8 +245,8 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltRight() {
-//		Rotate gravity 90 ( pi/2 ) anti-clockwise or -90 ( -pi/2 ) clockwise
-		
+		this.Gravity.x = 98.1f;
+		this.Gravity.y = 0;
 	}
 	
 }

@@ -1,7 +1,6 @@
 package game;
 
 public class StaticBlock extends Block {
-	Vec2 pos;
 
 	public StaticBlock(int x, int y) { 
 		this.pos = new Vec2(x,y);
