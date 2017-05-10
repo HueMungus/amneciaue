@@ -10,7 +10,7 @@ public class GameLevel extends Level {
 	ArrayList<MoveBlock> moveblocks;
 	ArrayList<StaticBlock> staticblocks;
 	MoveBlock focus;
-	public Vec2 Gravity = new Vec2(0.0f,9.81f);
+	public Vec2 Gravity = new Vec2(0.0f,15.0f);
 	ArrayList<StaticBlock> staticBlocks;
 	public boolean verticalGravity = true;
 	

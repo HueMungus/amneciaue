@@ -278,7 +278,6 @@ public class Engine extends GameEngine implements ActionListener {
 //								If B (focus) is further on the X than A
 								System.out.println("Checkpoint A1: Adding penetration vector on the X");
 								focus.pos.x += penetration.x;
-								A.color = Color.GREEN;
 								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
 								gLevel.stop();
 							}
