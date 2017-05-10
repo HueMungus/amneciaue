@@ -50,13 +50,6 @@ public class GameLevel extends Level {
 		File file;
 		staticBlocks = new ArrayList<StaticBlock>();
 		moveblocks = new ArrayList<MoveBlock>();
-//		mBlockColumns = new ArrayList<ArrayList<MoveBlock>>();
-//		for (int i = 0; i < Block.ratio; ++i) {
-//			mBlockColumns.add(new ArrayList<MoveBlock>());
-//			for (int j = 0; j < Block.ratio; ++j) {
-//				mBlockColumns.get(i).add(new MoveBlock());
-//			}
-//		}
 		Vec2 pos = new Vec2();
 		Vec2 vel = new Vec2();
 		if (sameDirectory) {
@@ -108,37 +101,8 @@ public class GameLevel extends Level {
 						MoveBlock steve = new MoveBlock(pos, vel);
 						parts.add(steve);
 						moveblocks.add(steve);
-//						mBlockColumns.get((int)(pos.x / 60)).set((int)(pos.y / 60), steve);
 						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
 						break;
-//					case "move":
-//						//					Set the position vector if specified in the file
-//						if (words.length > 2) {
-//							pos.x = Integer.parseInt(words[1]);
-//							pos.y = Integer.parseInt(words[2]);
-//						} else {
-//							pos.x = pos.y = 0;
-//						}
-//						//					set the velocity vector if specified in the file
-//						if (words.length > 4) {
-//							vel.x = (float) Double.parseDouble(words[3]);
-//							vel.y = (float) Double.parseDouble(words[4]);
-//						} else {
-//							vel.x = vel.y = 0.0f;
-//						}
-//						MoveBlock steve = new MoveBlock(pos, vel, coolImage);
-//						parts.add(steve);
-//						moveblocks.add(steve);
-////						mBlockColumns.get((int)(pos.x / 60)).set((int)(pos.y / 60), steve);
-//						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
-//						break;
-//					case "custom" :
-////						Go through custom commands
-//						if (words.length > 3) {
-//							if (words[1] == "dimensions") {
-//								
-//							}
-//						}
 					default:
 						System.out.println("Unknown block type: " + words[0] + "\"");
 						break;
@@ -216,6 +180,12 @@ public class GameLevel extends Level {
 		}
 	}*/
 	
+	public void stop() {
+		physicsOn = false;
+		focus.v.x = 0;
+		focus.v.y = 0;
+	}
+	
 	public void add(MoveBlock moveblock) {
 		this.parts.add(moveblock);
 		this.moveblocks.add(moveblock);
@@ -233,9 +203,10 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltLeft() {
-		this.Gravity.x = -98.1f;
+		this.Gravity.x = -9.81f;
 		this.Gravity.y = 0;
-		
+		this.verticalGravity = false;
+		System.out.println("Gravity: " + Gravity.toString());
 	}
 
 	@Override
@@ -245,8 +216,26 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltRight() {
-		this.Gravity.x = 98.1f;
+		this.Gravity.x = 9.81f;
 		this.Gravity.y = 0;
+		this.verticalGravity = false;
+		System.out.println("Gravity: " + Gravity.toString());
+	}
+	
+	@Override
+	public void AltUp() {
+		this.Gravity.x = 0;
+		this.Gravity.y = -9.81f;
+		this.verticalGravity = true;
+		System.out.println("Gravity: " + Gravity.toString());
+	}
+	
+	@Override
+	public void AltDown() {
+		this.Gravity.x = 0;
+		this.Gravity.y = 9.81f;
+		this.verticalGravity = true;
+		System.out.println("Gravity: " + Gravity.toString());
 	}
 	
 }

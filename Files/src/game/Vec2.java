@@ -55,6 +55,17 @@ public class Vec2 {
 		return new Vec2(Math.round(this.x * d),Math.round(this.y * d));
 	}
 	
+	public boolean isWithin(Vec2 A, Vec2 B) {
+		// When B is bigger than A
+		if (this.x < B.x && this.x > A.x && this.y < B.y && this.y > A.y)
+			return true;
+		// When A is bigger than B
+		if (this.x < A.x && this.x > B.x && this.y < A.y && this.y > B.y)
+			return true;
+		
+		return false;
+	}
+	
 	public static long DotProduct(Vec2 A, Vec2 B) {
 		return Math.round((A.x * B.x) + (A.y * B.y));
 	}

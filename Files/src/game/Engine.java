@@ -9,7 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,27 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-public class Engine extends GameEngine implements ActionListener, MouseMotionListener {
-	//	 In future if multi-threaded, this will be the renderer, another class will be the physics engine
-	//	 As such update schedule will be 
-	//	Physics - not done
-	//	Render - working on it
-	//	Remove needed (from toRemove array) - not done
-	//	Add needed (from toAdd array) - not done
-	//	
-	//	Checklist: (other than above)
-	//	Constructor - in progress
-	//	Set up screen clearing - done
-	//	Getting keyboard/mouse input - in progress
-	//	
-	//	Levels - part done
-	//	
-	//	
-	//	
-	
-	// Goes through each array at the end of update loop
-	ArrayList<Block> toAdd = new ArrayList<Block>();
-	ArrayList<Block> toRemove = new ArrayList<Block>();
+public class Engine extends GameEngine implements ActionListener {	
 //	Color stuff
 	public static Color MBColor = Color.BLUE;
 	public static Color SBColor = Color.GRAY;
@@ -72,10 +53,40 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 		
 		mFrame = new JFrame(); 									// Initialize the mFrame (which is the window)
 		mPanel = new JPanel();									// Initialize the mPanel (which is like the 'canvas' that goes in the window)
+		mPanel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("Mouse clicked");
+				if (gLevel != null) {
+					Vec2 mousePos = new Vec2(e.getX(), e.getY());
+					for (Block A : gLevel.parts) {
+						if (mousePos.isWithin(A.pos, new Vec2(A.pos.x + A.width(), A.pos.y + A.height()))) {
+							if (A.getClass() == MoveBlock.class) {
+								gLevel.focus = (MoveBlock) A;
+//								gLevel.physicsOn = true;
+								e.consume();
+								return;
+							}
+							// Flash the block
+						}
+					}
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+		});
 		mFrame.setTitle("PewDiePieSimulator");						// #Originality
 		mFrame.setSize(frameWidth, frameHeight);				// Set the size of the window
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Makes the window close when you click the 'X' or right click on program tray
 		mFrame.setLocationRelativeTo(null);						// Positions window in center of screen (null means center of screen)
+		mFrame.setUndecorated(true);
 		menu = new Level() {									// menu is the first Level that is visible on launch, currently a potato picture
 			@Override
 			public void Left() {
@@ -118,7 +129,9 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");								// Left keybind code
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");	// AltRight keybind code
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");								// Right keybind code
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "space");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "space");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK, true), "alt up");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK, true), "alt down");
 		mPanel.getActionMap().put("alt left", new AbstractAction() {														// AltLeft action code (what the AltLeft keybind does)
 
 			@Override
@@ -166,7 +179,20 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 				}
 			}
 		});
-//		mPanel.setDoubleBuffered(true);
+		mPanel.getActionMap().put("alt up", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("AltUp");
+				level.AltUp();
+			}
+		});
+		mPanel.getActionMap().put("alt down", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("AltDown");
+				level.AltDown();
+			}
+		});
 		mFrame.add(mPanel);									// Adding the Panel that will contain the stuff to the window
 		mFrame.setVisible(true);							// You have to make it visible (invisible by default)
 
@@ -192,13 +218,6 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 			Collisions(); // Collisions only work on GameLevels, but GameLevel test is done in this method
 		}
 		
-		/*if (removeOn) {
-			
-		}
-		if (addOn) {
-			
-		}*/
-		
 		if (renderOn) {
 //			System.out.println("Rendering...");
 			Render();
@@ -218,9 +237,9 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 			} else {
 //				Otherwise it should be using a color, so draw a rectangle of that color
 				Graphics.setColor(block.color);
-//				System.out.println("Rendering a block with color: " + block.color.toString());
+//				System.out.println("Rendering a " + block.getClass() + " with color: " + block.color.toString());
 				Graphics.fillRect(block.x(), block.y(), block.width(), block.height());
-//				System.out.println("Using coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
+//				System.out.println("Rendering a" + block.getClass() + " with coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
 			}
 		}
 		if (gLevel != null) {
@@ -234,7 +253,7 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 		// Checking if the current level of type Level is the same object as the current level of type GameLevel (yeah its annoying)
 		if (level.getClass().equals(GameLevel.class)) {
 //			Physics
-//			First check if the current level's physicsOn boolean is true, otherwise do nothing (inMotion will be set to true when a block is supposed to fall)
+//			First check if the current level's physicsOn boolean is true, otherwise do nothing (physicsOn will be set to true when a block is supposed to fall)
 			if (gLevel.physicsOn) {
 //				First move the focused block by the gravity vector multiplied by dt (and move the block)
 				focus.v = focus.v.add(gLevel.Gravity.mult(((float) dt) / 1000));
@@ -251,26 +270,32 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 							if (A.pos.x > focus.pos.x) {
 //								If A is further on the X than B (focus)
 								System.out.println("Checkpoint B2: Subtracting penetration vector on the X");
-								focus.pos = focus.pos.minus(penetration);
-								System.out.println("Focus at: " + focus.pos.toString());
+								System.out.println("Gravity is: " + gLevel.Gravity.toString());
+								focus.pos.x -= penetration.x;
+								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
+								gLevel.stop();
 							} else {
 //								If B (focus) is further on the X than A
 								System.out.println("Checkpoint A1: Adding penetration vector on the X");
-								focus.pos = focus.pos.add(penetration);
-								System.out.println("Focus at: " + focus.pos.toString());
+								focus.pos.x += penetration.x;
+								A.color = Color.GREEN;
+								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
+								gLevel.stop();
 							}
 						} else {
 //							If penetration is on the Y
 							if (A.pos.y > focus.pos.y) {
 //								If A is further on the y than B (focus)
 								System.out.println("Checkpoint D4: Subtracting penetration vector on the Y");
-								focus.pos = focus.pos.minus(penetration);
-								System.out.println("Focus at: " + focus.pos.toString());
+								focus.pos.y -= penetration.y;
+								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
+								gLevel.stop();
 							} else {
 //								If B (focus) is further on the y than A
 								System.out.println("Checkpoint C3: Adding penetration vector on the Y");
-								focus.pos = focus.pos.add(penetration);
-								System.out.println("Focus at: " + focus.pos.toString());
+								focus.pos.y += penetration.y;
+								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
+								gLevel.stop();
 							}
 						}
 						return;
@@ -283,14 +308,14 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 //					if the focused block's y position is less than 0
 //					turn physics off, set its y position to 0, and return
 					if (gLevel.focus.pos.y < 0) {
-						gLevel.physicsOn = false;
+						gLevel.stop();
 						gLevel.focus.pos.y = 0;
 						return;
 					}
 //					if the focused block's x position + its width is greater than the window's size
 //					turn physics off, set its position to the window's width - focused block's width, and return
 					if (gLevel.focus.pos.y + gLevel.focus.height() > mFrame.getHeight()) {
-						gLevel.physicsOn = false;
+						gLevel.stop();
 						gLevel.focus.pos.y = mFrame.getHeight() - gLevel.focus.height();
 						return;
 					}
@@ -298,14 +323,14 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 //					if the focused block's x position is less than 0
 //					turn physics off, set its position to 0, and return
 					if (gLevel.focus.pos.x < 0) {
-						gLevel.physicsOn = false;
+						gLevel.stop();
 						gLevel.focus.pos.x = 0;
 						return;
 					}
 //					if the focused block's x position + its width is greater than the window's size
 //					turn physics off, set its position to the window's width - focused block's width, and return
 					if (gLevel.focus.pos.x + gLevel.focus.width() > mFrame.getWidth()) {
-						gLevel.physicsOn = false;
+						gLevel.stop();
 						gLevel.focus.pos.x = mFrame.getWidth() - gLevel.focus.width();
 					}
 					
@@ -314,8 +339,11 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 		}
 	}
 	
-//	Used to test if one block is inside another
-//	Returns null if they didn't, otherwise returns movement vector that can be used to move the block out
+	/**
+	 * Tests if two blocks collided Tests:
+	 * @param A against Block B (focus block)
+	 * @return Vec2 containing the required movement to put block B into resting position
+	 */
 	public Vec2 FocusCollidesWith( Block A ) {
 		Block B = gLevel.focus;
 		if (A == B) {
@@ -388,6 +416,35 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 	
 	@Override
 	public void paintComponent() {  } //Overriden from GameEngine, method is abstract so must be overriden
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
 
@@ -490,14 +547,14 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 ////				if the focused block's y position is less than 0
 ////				turn physics off, set its y position to 0, and return
 //				if (gLevel.focus.pos.y < 0) {
-//					gLevel.physicsOn = false;
+//					gLevel.stop();
 //					gLevel.focus.pos.y = 0;
 //					return;
 //				}
 ////				if the focused block's x position + its width is greater than the window's size
 ////				turn physics off, set its position to the window's width - focused block's width, and return
 //				if (gLevel.focus.pos.y + gLevel.focus.height() > mFrame.getHeight()) {
-//					gLevel.physicsOn = false;
+//					gLevel.stop();
 //					gLevel.focus.pos.y = mFrame.getHeight() - gLevel.focus.height();
 //					return;
 //				}
@@ -505,14 +562,14 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 ////				if the focused block's x position is less than 0
 ////				turn physics off, set its position to 0, and return
 //				if (gLevel.focus.pos.x < 0) {
-//					gLevel.physicsOn = false;
+//					gLevel.stop();
 //					gLevel.focus.pos.x = 0;
 //					return;
 //				}
 ////				if the focused block's x position + its width is greater than the window's size
 ////				turn physics off, set its position to the window's width - focused block's width, and return
 //				if (gLevel.focus.pos.x + gLevel.focus.width() > mFrame.getWidth()) {
-//					gLevel.physicsOn = false;
+//					gLevel.stop();
 //					gLevel.focus.pos.x = mFrame.getWidth() - gLevel.focus.width();
 //				}
 //				
