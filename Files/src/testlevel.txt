@@ -32,3 +32,13 @@ move 60 540
 move 180 540
 move 240 540
 move 540 540
+goal 0 540
+goal 60 540
+goal 120 540
+goal 180 540
+goal 240 540
+goal 300 540
+goal 360 540
+goal 420 540
+goal 480 540
+goal 540 540

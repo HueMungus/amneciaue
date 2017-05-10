@@ -124,67 +124,6 @@ public class GameLevel extends Level {
 		}
 	}
 	
-	/**
-	 * Loads up the parts, moveblocks and staticblocks arrays stored in this GameLevel,
-	 * Flag percentPositions determines whether the positions are absolute, or a percentage of screen space
-	 * @param percentPositions
-	 * @param filename
-	 *//*
-	public void Load(boolean percentPositions, String filename) {
-		File file;
-		Vec2 pos = new Vec2();
-		Vec2 vel = new Vec2();
-		file = new File(System.getProperty("user.dir") + "/src/"+ filename);
-		System.out.println(System.getProperty("user.dir") + "/src/" + " with " + filename);
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String[] words = line.split(" ");
-				if (words[0] != null) {
-					switch (words[0].toLowerCase()) {
-					case "staticblock":
-						if (words[1] != null && words[2] != null) {
-							pos.x = Integer.parseInt(words[1]);
-							pos.y = Integer.parseInt(words[2]);
-						} else {
-							pos.x = pos.y = 0;
-						}
-						StaticBlock bob = new StaticBlock(pos);
-						parts.add(bob);
-						staticblocks.add(bob);
-						break;
-					case "moveblock":
-						//					Set the position vector if specified in the file
-						if (words[1] != null && words[2] != null) {
-							pos.x = Integer.parseInt(words[1]);
-							pos.y = Integer.parseInt(words[2]);
-						} else {
-							pos.x = pos.y = 0;
-						}
-						//					set the velocity vector if specified in the file
-						if (words[3] != null && words[4] != null) {
-							vel.x = (float) Double.parseDouble(words[3]);
-							vel.y = (float) Double.parseDouble(words[4]);
-						} else {
-							vel.x = vel.y = 0.0f;
-						}
-						MoveBlock steve = new MoveBlock(pos, vel);
-						parts.add(steve);
-						moveblocks.add(steve);
-
-						break;
-					default:
-						System.out.println("Unknown block type: " + words[0] + "\"");
-						break;
-					}
-				}
-			}
-			reader.close();
-		} catch (Exception e) {
-			System.out.println("Exception caught in Load Method with Load(" + filename + ")");
-		}
-	}*/
 	
 	public void stop() {
 		physicsOn = false;

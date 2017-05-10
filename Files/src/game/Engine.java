@@ -27,7 +27,7 @@ public class Engine extends GameEngine implements ActionListener {
 	public static Color SBColor = Color.GRAY;
 	public static Color BColor = Color.PINK;
 	public static Color FColor = Color.RED;
-	public static Color GColor = Color.LIGHT_GRAY;
+	public static Color GColor = new Color(0.6f,0.6f,0.6f,0.3f);
 //	Level stuff
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
@@ -37,7 +37,7 @@ public class Engine extends GameEngine implements ActionListener {
 //	Render/Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	long prevdt = System.currentTimeMillis(), dt = 0;
-	Timer loop = new Timer(10, this);
+	Timer loop = new Timer(25, this);
 //	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
@@ -262,7 +262,22 @@ public class Engine extends GameEngine implements ActionListener {
 					if ((penetration = FocusCollidesWith(A)) != null) {
 						System.out.println("Resolving Collision...");
 //						Resolve
-						if (penetration.x > 0) {
+						if (gLevel.verticalGravity) {
+							if (A.pos.y > focus.pos.y) {
+//								If A is further on the y than B (focus)
+								System.out.println("Checkpoint D4: Subtracting penetration vector on the Y");
+								focus.pos.y -= penetration.y;
+								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
+								gLevel.stop();
+							} else {
+//								If B (focus) is further on the y than A
+								System.out.println("Checkpoint C3: Adding penetration vector on the Y");
+								focus.pos.y += penetration.y;
+								A.color = Color.GREEN;
+								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
+								gLevel.stop();
+							}
+						} else {
 //							If penetration is on the X
 							if (A.pos.x > focus.pos.x) {
 //								If A is further on the X than B (focus)
@@ -278,21 +293,7 @@ public class Engine extends GameEngine implements ActionListener {
 								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
 								gLevel.stop();
 							}
-						} else {
-//							If penetration is on the Y
-							if (A.pos.y > focus.pos.y) {
-//								If A is further on the y than B (focus)
-								System.out.println("Checkpoint D4: Subtracting penetration vector on the Y");
-								focus.pos.y -= penetration.y;
-								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
-								gLevel.stop();
-							} else {
-//								If B (focus) is further on the y than A
-								System.out.println("Checkpoint C3: Adding penetration vector on the Y");
-								focus.pos.y += penetration.y;
-								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
-								gLevel.stop();
-							}
+							
 						}
 						return;
 					}
@@ -373,14 +374,19 @@ public class Engine extends GameEngine implements ActionListener {
 				{
 					// Point towards B knowing that n points from A to B
 					if(!(n.x < 0)) {
-						return new Vec2(0, y_overlap);
+						if (y_overlap > 0.1f) {
+							return new Vec2(0, y_overlap);
+						}
 					}
 				}
 				else
 				{
 					// Point toward B knowing that n points from A to B
-					if(!(n.y < 0))
-					return new Vec2(x_overlap, 0);
+					if(!(n.y < 0)) {
+						if (x_overlap > 0.1f) {
+							return new Vec2(x_overlap, 0);
+						}
+					}
 				}
 			}
 		}
