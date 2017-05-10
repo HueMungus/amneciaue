@@ -183,8 +183,9 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {			// Main loop
-		dt = System.currentTimeMillis() - prevdt;
-		prevdt = System.currentTimeMillis();
+		long temptime = System.currentTimeMillis();
+		dt = temptime - prevdt;
+		prevdt = temptime;
 //		System.out.println("Updating...");
 		if (physicsOn) {
 //			System.out.println("Physics-ing...");
@@ -247,26 +248,26 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 //							If penetration is on the X
 							if (A.pos.x > gLevel.focus.pos.x) {
 //								If A is further on the X than B (focus)
-								System.out.println("Checkpoint A1: Adding penetration vector on the X");
-								gLevel.focus.pos = gLevel.focus.pos.add(penetration);
+								System.out.println("Checkpoint B2: Subtracting penetration vector on the X");
+								gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
 								System.out.println("Focus at: " + gLevel.focus.pos.toString());
 							} else {
 //								If B (focus) is further on the X than A
-								System.out.println("Checkpoint B2: Subtracting penetration vector on the X");
-								gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
+								System.out.println("Checkpoint A1: Adding penetration vector on the X");
+								gLevel.focus.pos = gLevel.focus.pos.add(penetration);
 								System.out.println("Focus at: " + gLevel.focus.pos.toString());
 							}
 						} else {
 //							If penetration is on the Y
 							if (A.pos.y > gLevel.focus.pos.y) {
 //								If A is further on the y than B (focus)
-								System.out.println("Checkpoint C3: Adding penetration vector on the Y");
-								gLevel.focus.pos = gLevel.focus.pos.add(penetration);
+								System.out.println("Checkpoint D4: Subtracting penetration vector on the Y");
+								gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
 								System.out.println("Focus at: " + gLevel.focus.pos.toString());
 							} else {
 //								If B (focus) is further on the y than A
-								System.out.println("Checkpoint D4: Subtracting penetration vector on the Y");
-								gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
+								System.out.println("Checkpoint C3: Adding penetration vector on the Y");
+								gLevel.focus.pos = gLevel.focus.pos.add(penetration);
 								System.out.println("Focus at: " + gLevel.focus.pos.toString());
 							}
 						}
@@ -346,14 +347,14 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 				{
 					// Point towards B knowing that n points from A to B
 					if(!(n.x < 0)) {
-						return new Vec2(x_overlap, 0);
+						return new Vec2(0, y_overlap);
 					}
 				}
 				else
 				{
 					// Point toward B knowing that n points from A to B
 					if(!(n.y < 0))
-					return new Vec2(0, y_overlap);
+					return new Vec2(x_overlap, 0);
 				}
 			}
 		}
@@ -387,3 +388,133 @@ public class Engine extends GameEngine implements ActionListener, MouseMotionLis
 	public void paintComponent() {  } //Overriden from GameEngine, method is abstract so must be overriden
 	
 }
+
+//public Vec2 FocusCollidesWith( Block A ) {
+//	Block B = gLevel.focus;
+//	if (A == B) {
+//		return null;
+//	}
+//	Vec2 Amax = new Vec2(A.pos.x + A.width(), A.pos.y + A.height());
+//	Vec2 Bmax = new Vec2(B.pos.x + B.width(), B.pos.y + B.height());
+//	System.out.println(Amax.toString() + " and " + Bmax.toString());
+//	
+//	// Vector from A to B
+//	Vec2 n = B.pos.minus(A.pos);
+//	
+//	// Calculate half extents along x axis for each object
+//	float a_extent = (Amax.x - A.pos.x) / 2;
+//	float b_extent = (Bmax.x - B.pos.x) / 2;
+//
+//	// Calculate overlap on x axis
+//	float x_overlap = a_extent + b_extent - Math.abs( n.x ); 
+//
+//	// SAT test on  axis
+//	if (x_overlap > 0)
+//	{
+//		// Calculate overlap on y axis
+//		float y_overlap = a_extent + b_extent - Math.abs( n.y );
+//
+//		// SAT test on y axis
+//		if(y_overlap > 0)
+//		{
+//			// Find out which axis is axis of least penetration
+//			if(x_overlap > y_overlap)
+//			{
+//				// Point towards B knowing that n points from A to B
+//				if(!(n.x < 0)) {
+//					return new Vec2(x_overlap, 0);
+//				}
+//			}
+//			else
+//			{
+//				// Point toward B knowing that n points from A to B
+//				if(!(n.y < 0))
+//				return new Vec2(0, y_overlap);
+//			}
+//		}
+//	}
+//	return null;
+//}
+
+//public void Collisions() {
+//	// Checking if the current level of type Level is the same object as the current level of type GameLevel (yeah its annoying)
+//	if (level.getClass().equals(GameLevel.class)) {
+////		Physics
+////		First check if the current level's physicsOn boolean is true, otherwise do nothing (inMotion will be set to true when a block is supposed to fall)
+//		if (gLevel.physicsOn) {
+////			First move the focused block by the gravity vector multiplied by dt
+//			gLevel.focus.pos = gLevel.focus.pos.add(gLevel.Gravity.mult(((float) dt) / 1000));
+////			Second check other objects
+//			Vec2 penetration;
+//			for (Block A : gLevel.parts) {
+////				Will be null if no collision
+//				if ((penetration = FocusCollidesWith(A)) != null) {
+//					System.out.println("Resolving Collision...");
+////					Resolve
+//					if (penetration.x > 0) {
+////						If penetration is on the X
+//						if (A.pos.x > gLevel.focus.pos.x) {
+////							If A is further on the X than B (focus)
+//							System.out.println("Checkpoint A1: Adding penetration vector on the X");
+//							gLevel.focus.pos = gLevel.focus.pos.add(penetration);
+//							System.out.println("Focus at: " + gLevel.focus.pos.toString());
+//						} else {
+////							If B (focus) is further on the X than A
+//							System.out.println("Checkpoint B2: Subtracting penetration vector on the X");
+//							gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
+//							System.out.println("Focus at: " + gLevel.focus.pos.toString());
+//						}
+//					} else {
+////						If penetration is on the Y
+//						if (A.pos.y > gLevel.focus.pos.y) {
+////							If A is further on the y than B (focus)
+//							System.out.println("Checkpoint C3: Adding penetration vector on the Y");
+//							gLevel.focus.pos = gLevel.focus.pos.add(penetration);
+//							System.out.println("Focus at: " + gLevel.focus.pos.toString());
+//						} else {
+////							If B (focus) is further on the y than A
+//							System.out.println("Checkpoint D4: Subtracting penetration vector on the Y");
+//							gLevel.focus.pos = gLevel.focus.pos.minus(penetration);
+//							System.out.println("Focus at: " + gLevel.focus.pos.toString());
+//						}
+//					}
+//					return;
+//				}
+//			}
+//			
+////			Lastly check world bounds
+////			Only check vertical (top & bottom) world bounds if verticalGravity is true, otherwise check horizontal (left & right) world bounds
+//			if (gLevel.verticalGravity) {
+////				if the focused block's y position is less than 0
+////				turn physics off, set its y position to 0, and return
+//				if (gLevel.focus.pos.y < 0) {
+//					gLevel.physicsOn = false;
+//					gLevel.focus.pos.y = 0;
+//					return;
+//				}
+////				if the focused block's x position + its width is greater than the window's size
+////				turn physics off, set its position to the window's width - focused block's width, and return
+//				if (gLevel.focus.pos.y + gLevel.focus.height() > mFrame.getHeight()) {
+//					gLevel.physicsOn = false;
+//					gLevel.focus.pos.y = mFrame.getHeight() - gLevel.focus.height();
+//					return;
+//				}
+//			} else {
+////				if the focused block's x position is less than 0
+////				turn physics off, set its position to 0, and return
+//				if (gLevel.focus.pos.x < 0) {
+//					gLevel.physicsOn = false;
+//					gLevel.focus.pos.x = 0;
+//					return;
+//				}
+////				if the focused block's x position + its width is greater than the window's size
+////				turn physics off, set its position to the window's width - focused block's width, and return
+//				if (gLevel.focus.pos.x + gLevel.focus.width() > mFrame.getWidth()) {
+//					gLevel.physicsOn = false;
+//					gLevel.focus.pos.x = mFrame.getWidth() - gLevel.focus.width();
+//				}
+//				
+//			}
+//		}
+//	}
+//}

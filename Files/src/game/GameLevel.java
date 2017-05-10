@@ -11,7 +11,7 @@ public class GameLevel extends Level {
 //	ArrayList<ArrayList<MoveBlock>> mBlockColumns;
 	ArrayList<StaticBlock> staticBlocks;
 	Block focus;
-	public Vec2 Gravity = new Vec2(0.0f,9.81f);
+	public Vec2 Gravity = new Vec2(0.0f,98.1f);
 	public boolean verticalGravity = true;
 	
 	public Image coolImage = Engine.importImage("60.jpg");
@@ -233,7 +233,8 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltLeft() {
-//		Rotate gravity 90 degrees ( pi/2 ) clockwise
+		this.Gravity.x = -98.1f;
+		this.Gravity.y = 0;
 		
 	}
 
@@ -244,8 +245,8 @@ public class GameLevel extends Level {
 
 	@Override
 	public void AltRight() {
-//		Rotate gravity 90 ( pi/2 ) anti-clockwise or -90 ( -pi/2 ) clockwise
-		
+		this.Gravity.x = 98.1f;
+		this.Gravity.y = 0;
 	}
 	
 }
