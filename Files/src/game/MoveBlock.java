@@ -1,6 +1,6 @@
 package game;
 
-import java.awt.Color;
+import java.awt.Image;
 
 public class MoveBlock extends Block {
 	Vec2 v;
@@ -29,6 +29,8 @@ public class MoveBlock extends Block {
 	 * @param v
 	 */
 	public MoveBlock(Vec2 pos, Vec2 v) { this((int)pos.x, (int)pos.y, (int)v.x, (int)v.y); }
+	
+	public MoveBlock(Vec2 pos, Vec2 v, Image image) { super((int) pos.x,(int) pos.y, image); this.v = v; }
 	
 	/**
 	 * Makes a no-velocity MoveBlock with position:
