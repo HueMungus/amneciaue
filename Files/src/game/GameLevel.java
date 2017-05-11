@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class GameLevel extends Level {
-	ArrayList<MoveBlock> moveblocks;
-	ArrayList<StaticBlock> staticblocks;
-	MoveBlock focus;
+	ArrayList<Block.Move> moveblocks;
+	ArrayList<Block.Static> staticblocks;
+	Block.Move focus;
 	public static float GravityConstant = 9.81f;
 	public Vec2 Gravity = new Vec2(0.0f, GravityConstant);
-	ArrayList<StaticBlock> staticBlocks;
+	ArrayList<Block.Static> staticBlocks;
 	public boolean verticalGravity = true;
 	
 //	public Image coolImage = Engine.importImage("60.jpg");
@@ -22,19 +22,19 @@ public class GameLevel extends Level {
 	 */
 	public boolean physicsOn;
 	
-	public GameLevel(MoveBlock[] moveblocks, StaticBlock[] staticblocks) {
-		for (MoveBlock mblock : moveblocks) {
+	public GameLevel(Block.Move[] moveblocks, Block.Static[] staticblocks) {
+		for (Block.Move mblock : moveblocks) {
 			add(mblock);
 			this.moveblocks.add(mblock);
 		}
-		for (StaticBlock sblock : staticblocks) {
+		for (Block.Static sblock : staticblocks) {
 			add(sblock);
 			this.staticBlocks.add(sblock);
 		}
 		physicsOn = false;
 	}
 	
-//	public GameLevel(ArrayList<Block> parts, ArrayList<MoveBlock> moveblocks, ArrayList<StaticBlock> staticblocks) {
+//	public GameLevel(ArrayList<Block> parts, ArrayList<Block.MoveBlock> moveblocks, ArrayList<Block.StaticBlock> staticblocks) {
 //		this.pparts = parts;
 //		this.moveblocks = moveblocks;
 //		this.staticBlocks = staticblocks;
@@ -48,8 +48,8 @@ public class GameLevel extends Level {
 	
 	public void Load(String filename, boolean sameDirectory) {
 		File file;
-		staticBlocks = new ArrayList<StaticBlock>();
-		moveblocks = new ArrayList<MoveBlock>();
+		staticBlocks = new ArrayList<Block.Static>();
+		moveblocks = new ArrayList<Block.Move>();
 		Vec2 pos = new Vec2();
 		Vec2 vel = new Vec2();
 		if (sameDirectory) {
@@ -74,7 +74,7 @@ public class GameLevel extends Level {
 						} else {
 							pos.x = pos.y = 0;
 						}
-						StaticBlock bob = new StaticBlock((int) pos.x,(int) pos.y);
+						Block.Static bob = new Block.Static(pos);
 						add(bob);
 						staticBlocks.add(bob);
 						System.out.println("Made a staticblock with position: " + pos.x + ", " + pos.y);
@@ -94,7 +94,7 @@ public class GameLevel extends Level {
 						} else {
 							vel.x = vel.y = 0.0f;
 						}
-						MoveBlock steve = new MoveBlock(pos, vel);
+						Block.Move steve = new Block.Move(pos, vel);
 						add(steve);
 						moveblocks.add(steve);
 						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
@@ -106,7 +106,7 @@ public class GameLevel extends Level {
 						} else {
 							pos.x = pos.y = 0;
 						}
-						Block john = new Block(pos, Engine.GColor);
+						Block john = new Block(pos, Engine.OColor);
 						addv(john);
 						System.out.println("Made a goal block with position: " + pos.toString());
 					default:
@@ -131,12 +131,12 @@ public class GameLevel extends Level {
 		focus.v.y = 0;
 	}
 	
-	public void add(MoveBlock moveblock) {
+	public void add(Block.Move moveblock) {
 		super.add(moveblock);
 		this.moveblocks.add(moveblock);
 	}
 	
-	public void add(StaticBlock staticblock) {
+	public void add(Block.Static staticblock) {
 		super.add(staticblock);
 		this.staticBlocks.add(staticblock);
 	}

@@ -27,7 +27,7 @@ public class Engine extends GameEngine implements ActionListener {
 	public static Color SBColor = Color.GRAY;
 	public static Color BColor = Color.PINK;
 	public static Color FColor = Color.RED;
-	public static Color GColor = new Color(0.6f,0.6f,0.6f,0.3f);
+	public static Color OColor = Color.ORANGE;
 //	Level stuff
 	GameLevel gLevel;
 	GameLevel testLevel = new GameLevel("testlevel.txt", true);
@@ -61,8 +61,8 @@ public class Engine extends GameEngine implements ActionListener {
 					Vec2 mousePos = new Vec2(e.getX(), e.getY());
 					for (Block A : gLevel.pparts) {
 						if (mousePos.isWithin(A.pos, new Vec2(A.pos.x + A.width(), A.pos.y + A.height()))) {
-							if (A.getClass() == MoveBlock.class) {
-								gLevel.focus = (MoveBlock) A;
+							if (A.getClass() == Block.Move.class) {
+								gLevel.focus = (Block.Move) A;
 //								gLevel.physicsOn = true;
 								e.consume();
 								return;
@@ -82,7 +82,7 @@ public class Engine extends GameEngine implements ActionListener {
 			public void mouseReleased(MouseEvent arg0) {}
 			
 		});
-		mFrame.setTitle("PewDiePieSimulator");
+		mFrame.setTitle("Cat Videos (NSFW)");
 		mFrame.setSize(frameWidth, frameHeight);
 		mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mFrame.setLocationRelativeTo(null);
@@ -244,7 +244,7 @@ public class Engine extends GameEngine implements ActionListener {
 	}
 	
 	public void Collisions() {
-		MoveBlock focus = gLevel.focus;
+		Block.Move focus = gLevel.focus;
 		// Checking if the current level of type Level is the same object as the current level of type GameLevel (yeah its annoying)
 		if (level.getClass().equals(GameLevel.class)) {
 //			Physics

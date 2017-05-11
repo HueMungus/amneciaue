@@ -85,21 +85,43 @@ public class Block {
 		return (int) bHeight;
 	}
 	
-	/**
-	 * Converts this Block into a MoveBlock
-	 * uses simple cast
-	 * @return
-	 */
-	public static MoveBlock newMove() {
-		return new MoveBlock();
+	public static class Static extends Block {
+		public int hitCounter = 0;
+
+		public Static(int x, int y) { 
+			this.pos = new Vec2(x,y);
+			this.color = Engine.SBColor;
+		}
+		
+		public Static(Vec2 pos) { this((int)pos.x, (int)pos.y); }
+		
+		public Static() { this(0,0); }
+		
 	}
 	
-	/**
-	 * Converts this Block into a StaticBlock
-	 * uses simple cast
-	 * @return
-	 */
-	public static StaticBlock newStatic() {
-		return new StaticBlock();
+	public static class Move extends Block {
+		Vec2 v;
+		
+		public Move(int x, int y, int vx, int vy) {
+			this.pos = new Vec2(x,y);
+			this.v = new Vec2(vx,vy);
+			this.color = Engine.MBColor;
+		}
+		
+		public Move(Vec2 pos, Vec2 v) { this((int)pos.x, (int)pos.y, (int)v.x, (int)v.y); }
+		
+		public Move(Vec2 pos, Vec2 v, Image image) { super((int) pos.x,(int) pos.y, image); this.v = v; }
+		
+		public Move(Vec2 pos) { this((int)pos.x, (int)pos.y, 0,0); }
+		
+		public Move(int x, int y) { this(x,y,0,0); }
+		
+		public Move() { this(0,0,0,0); }
+		
+		@Override
+		public void onHit() {
+			
+		}
+		
 	}
 }
