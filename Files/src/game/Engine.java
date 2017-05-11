@@ -57,7 +57,7 @@ public class Engine extends GameEngine implements ActionListener {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("Mouse clicked");
-				if (gLevel != null) {
+				if (gLevel != null && !gLevel.physicsOn) {
 					Vec2 mousePos = new Vec2(e.getX(), e.getY());
 					for (Block A : gLevel.pparts) {
 						if (mousePos.isWithin(A.pos, new Vec2(A.pos.x + A.width(), A.pos.y + A.height()))) {

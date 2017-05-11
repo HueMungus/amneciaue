@@ -11,7 +11,6 @@ public class GameLevel extends Level {
 	Block.Move focus;
 	public static float GravityConstant = 9.81f;
 	public Vec2 Gravity = new Vec2(0.0f, GravityConstant);
-	ArrayList<Block.Static> staticBlocks;
 	public boolean verticalGravity = true;
 	
 //	public Image coolImage = Engine.importImage("60.jpg");
@@ -29,7 +28,7 @@ public class GameLevel extends Level {
 		}
 		for (Block.Static sblock : staticblocks) {
 			add(sblock);
-			this.staticBlocks.add(sblock);
+			this.staticblocks.add(sblock);
 		}
 		physicsOn = false;
 	}
@@ -48,7 +47,7 @@ public class GameLevel extends Level {
 	
 	public void Load(String filename, boolean sameDirectory) {
 		File file;
-		staticBlocks = new ArrayList<Block.Static>();
+		staticblocks = new ArrayList<Block.Static>();
 		moveblocks = new ArrayList<Block.Move>();
 		Vec2 pos = new Vec2();
 		Vec2 vel = new Vec2();
@@ -76,7 +75,7 @@ public class GameLevel extends Level {
 						}
 						Block.Static bob = new Block.Static(pos);
 						add(bob);
-						staticBlocks.add(bob);
+						staticblocks.add(bob);
 						System.out.println("Made a staticblock with position: " + pos.x + ", " + pos.y);
 						break;
 					case "move":
@@ -138,7 +137,7 @@ public class GameLevel extends Level {
 	
 	public void add(Block.Static staticblock) {
 		super.add(staticblock);
-		this.staticBlocks.add(staticblock);
+		this.staticblocks.add(staticblock);
 	}
 
 	@Override
