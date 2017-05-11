@@ -143,51 +143,55 @@ public class GameLevel extends Level {
 
 	@Override
 	public void Left() {
-		
-	}
-
-	@Override
-	public void AltLeft() {
 		if (!physicsOn) {
 			this.Gravity.x = -1 * GravityConstant;
 			this.Gravity.y = 0;
 			this.verticalGravity = false;
 			System.out.println("Gravity: " + Gravity.toString());
+			physicsOn = true;
 		}
 	}
 
 	@Override
-	public void Right() {
+	public void AltLeft() {
 		
 	}
 
 	@Override
-	public void AltRight() {
+	public void Right() {
 		if (!physicsOn) {
 			this.Gravity.x = GravityConstant;
 			this.Gravity.y = 0;
 			this.verticalGravity = false;
 			System.out.println("Gravity: " + Gravity.toString());
+			physicsOn = true;
 		}
+	}
+
+	@Override
+	public void AltRight() {
+		
 	}
 	
 	@Override
-	public void AltUp() {
+	public void Up() {
 		if (!physicsOn) {
 			this.Gravity.x = 0;
 			this.Gravity.y = -1 * GravityConstant;
 			this.verticalGravity = true;
 			System.out.println("Gravity: " + Gravity.toString());
+			physicsOn = true;
 		}
 	}
 	
 	@Override
-	public void AltDown() {
+	public void Down() {
 		if (!physicsOn) {
 			this.Gravity.x = 0;
 			this.Gravity.y = GravityConstant;
 			this.verticalGravity = true;
 			System.out.println("Gravity: " + Gravity.toString());
+			physicsOn = true;
 		}
 	}
 	

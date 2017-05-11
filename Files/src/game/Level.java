@@ -72,7 +72,7 @@ public class Level {
 	public void AltRight() {
 	}
 	
-	public void AltUp() {}
-	public void AltDown() {}
+	public void Up() {}
+	public void Down() {}
 	
 }

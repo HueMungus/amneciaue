@@ -37,7 +37,7 @@ public class Engine extends GameEngine implements ActionListener {
 //	Render/Physics stuff
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	long prevdt = System.currentTimeMillis(), dt = 0;
-	Timer loop = new Timer(25, this);
+	Timer loop = new Timer(50, this);
 //	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
@@ -130,8 +130,8 @@ public class Engine extends GameEngine implements ActionListener {
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.ALT_DOWN_MASK, true), "alt right");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true), "right");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "space");
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.ALT_DOWN_MASK, true), "alt up");
-		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.ALT_DOWN_MASK, true), "alt down");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true), "up");
+		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true), "down");
 		mPanel.getActionMap().put("alt left", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -173,18 +173,18 @@ public class Engine extends GameEngine implements ActionListener {
 				}
 			}
 		});
-		mPanel.getActionMap().put("alt up", new AbstractAction() {
+		mPanel.getActionMap().put("up", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("AltUp");
-				level.AltUp();
+				System.out.println("Up");
+				level.Up();
 			}
 		});
-		mPanel.getActionMap().put("alt down", new AbstractAction() {
+		mPanel.getActionMap().put("down", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("AltDown");
-				level.AltDown();
+				System.out.println("Down");
+				level.Down();
 			}
 		});
 		mFrame.add(mPanel);
@@ -273,7 +273,6 @@ public class Engine extends GameEngine implements ActionListener {
 //								If B (focus) is further on the y than A
 								System.out.println("Checkpoint C3: Adding penetration vector on the Y");
 								focus.pos.y += penetration.y;
-								A.color = Color.GREEN;
 								System.out.println("Focus at: " + focus.pos.toString() + " and A at: " + A.pos.toString());
 								gLevel.stop();
 							}
