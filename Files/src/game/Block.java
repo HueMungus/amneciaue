@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.util.ArrayList;
 
 public class Block {
 	public boolean hasImage = false;
@@ -86,7 +87,6 @@ public class Block {
 	}
 	
 	public static class Static extends Block {
-		public int hitCounter = 0;
 
 		public Static(int x, int y) { 
 			this.pos = new Vec2(x,y);
@@ -122,6 +122,74 @@ public class Block {
 		public void onHit() {
 			
 		}
+		
+	}
+	
+	public static class Goal extends Block {
+//		public static int defaultLife = 3;
+//		public static Color life3 = Color.YELLOW, life2 = Color.ORANGE, life1 = Color.RED;
+//		public int life;
+//		public float colorincr;
+		public Goal target;
+		
+		public Goal(ArrayList<Vec2> points) {
+			if (!points.isEmpty()) {
+				this.pos = points.get(0);
+				this.color = Engine.OColor;
+				points.remove(0);
+				if (!points.isEmpty()) {
+					this.target = new Goal(points);
+				}
+			}
+		}
+		
+		public Goal(int x, int y, int x1, int y1) {
+			this.pos.x = x;
+			this.pos.y = y;
+			this.color = Engine.OColor;
+//			if (life < 1)
+//				this.life = defaultLife;
+//			else 
+//				this.life = life;
+			
+//			this.colorincr = 255.0f / life;
+		}
+		
+		public Goal(int x, int y) {
+			this.pos.x = x;
+			this.pos.y = y;
+			this.color = Engine.OColor;
+		}
+		
+		public Goal(Vec2 pos) { this((int) pos.x, (int) pos.y); }
+		public Goal(Vec2 pos, Vec2 pos1) { this(pos.x,pos.y, pos1.x, pos1.y); }
+		public Goal(float x, float y, float x1, float y1) { this((int) x, (int) y, (int) x1, (int) y1); }
+		
+		public boolean isEnd() {
+			return this.target == null;
+		}
+		
+//		public boolean hit() {
+//			--life;
+//			if (life <= 0) {
+//				return true;
+//			}
+//			switch (life) {
+//			case 1:
+//				this.color = life1;
+//				break;
+//			case 2:
+//				this.color = life2;
+//				break;
+//			case 3: 
+//				this.color = life3;
+//				break;
+//			default:
+//				break;
+//			}
+//			
+//			return false;
+//		}
 		
 	}
 }

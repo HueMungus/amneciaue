@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -20,6 +21,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
+
+import game.Block.Goal;
 
 public class Engine extends GameEngine implements ActionListener {	
 //	Color stuff
@@ -38,6 +41,8 @@ public class Engine extends GameEngine implements ActionListener {
 	boolean physicsOn, renderOn, removeOn, addOn; //Booleans that determine whether a 'system' should be used or not
 	long prevdt = System.currentTimeMillis(), dt = 0;
 	Timer loop = new Timer(50, this);
+	ArrayList<Block> toAdd = new ArrayList<Block>();
+	ArrayList<Block> toRemove = new ArrayList<Block>();
 //	Window stuff
 	static int frameWidth = 600, frameHeight = 600;
 	JFrame mFrame;
@@ -213,6 +218,14 @@ public class Engine extends GameEngine implements ActionListener {
 			Collisions(); // Collisions only work on GameLevels, but GameLevel test is done in this method
 		}
 		
+		for (Block remove : toRemove) {
+			level.remove(remove);
+		}
+		
+		for (Block add : toAdd) {
+			level.add(add);;
+		}
+		
 		if (renderOn) {
 //			System.out.println("Rendering...");
 			Render();
@@ -293,6 +306,15 @@ public class Engine extends GameEngine implements ActionListener {
 								gLevel.stop();
 							}
 							
+						}
+						if (A.getClass() == Block.Goal.class) {
+							Goal J = (Goal) A;
+							if (J.isEnd()) {
+								// TODO: Win code
+							} else {
+								toRemove.add(A);
+								toAdd.add(J.target);
+							}
 						}
 						return;
 					}

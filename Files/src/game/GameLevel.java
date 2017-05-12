@@ -99,14 +99,16 @@ public class GameLevel extends Level {
 						System.out.println("Made a moveblock with position: " + pos.x + ", " + pos.y + " and velocity " + vel.x + ", " + vel.y);
 						break;
 					case "goal" :
+						ArrayList<Vec2> points = new ArrayList<Vec2>();
 						if (words.length > 2) {
-							pos.x = Integer.parseInt(words[1]);
-							pos.y = Integer.parseInt(words[2]);
+							for (int i = 1; words.length > i * 2; ++i) {
+								points.add(new Vec2(Integer.parseInt(words[2 * i - 1]), Integer.parseInt(words[2 * i])));
+							}
 						} else {
 							pos.x = pos.y = 0;
 						}
-						Block john = new Block(pos, Engine.OColor);
-						addv(john);
+						Block.Goal john = new Block.Goal(points);
+						add(john);
 						System.out.println("Made a goal block with position: " + pos.toString());
 					default:
 						System.out.println("Unknown block type: " + words[0] + "\"");

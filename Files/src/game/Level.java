@@ -44,6 +44,12 @@ public class Level {
 		master.add(block);
 	}
 	
+	public void remove(Block block) {
+		pparts.remove(block);
+		vparts.remove(block);
+		master.remove(block);
+	}
+	
 	/**
 	 * The code to be called when this Level receives the Left key event. 
 	 * Generally called when this Level is being used and the user presses 'Left' key
