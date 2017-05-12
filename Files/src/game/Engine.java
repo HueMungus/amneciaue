@@ -342,7 +342,7 @@ public class Engine extends GameEngine implements ActionListener {
 							if (J.isEnd()) {
 								physicsOn = false;
 								renderOn = false;
-								
+								Graphics = (Graphics2D) bs.getDrawGraphics();
 								
 								if(level.maxChanges == 5){
 									//completed the level with max amount of moves, 3 stars
@@ -373,7 +373,7 @@ public class Engine extends GameEngine implements ActionListener {
 									Graphics.setFont(new Font("sans", Font.PLAIN, 100));	
 									Graphics.drawString("You Won", 100, 300);
 								}
-								
+								bs.show();
 								
 								
 							
