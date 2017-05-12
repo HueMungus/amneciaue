@@ -6,6 +6,7 @@ public class Level {
 	ArrayList<Block> vparts = new ArrayList<Block>();
 	ArrayList<Block> pparts = new ArrayList<Block>();
 	ArrayList<Block> master = new ArrayList<Block>();
+	public int maxChanges = 6;
 	
 	/**
 	 * Generates a blank level, this constructor should be deleted but couldn't be screwed

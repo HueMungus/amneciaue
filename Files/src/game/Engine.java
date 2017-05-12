@@ -3,8 +3,10 @@ package game;
 // Martin Johnson (Gave dev lecturer) said it was fine having multiple java files
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -67,10 +69,15 @@ public class Engine extends GameEngine implements ActionListener {
 					for (Block A : gLevel.pparts) {
 						if (mousePos.isWithin(A.pos, new Vec2(A.pos.x + A.width(), A.pos.y + A.height()))) {
 							if (A.getClass() == Block.Move.class) {
-								gLevel.focus = (Block.Move) A;
-//								gLevel.physicsOn = true;
-								e.consume();
-								return;
+								if (level.maxChanges > 0) {
+									gLevel.focus = (Block.Move) A;
+									--level.maxChanges;
+//									gLevel.physicsOn = true;
+									e.consume();
+									return;
+								} else {
+									// Make it more obvious that there are no changes left
+								}
 							}
 							// Flash the block
 						}
@@ -199,7 +206,11 @@ public class Engine extends GameEngine implements ActionListener {
 		renderOn = true;									// false by default
 		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
 		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
+		Graphics.setFont(new Font("sans", Font.PLAIN, 15));
 		Graphics.setBackground(Color.black);
+		Graphics.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		for (Block bob : testLevel.pparts) {
 			System.out.println("Block with " +bob.x() + ", " + bob.y() + " with dimensions " + bob.width() + ", " + bob.height());
@@ -254,6 +265,8 @@ public class Engine extends GameEngine implements ActionListener {
 //				System.out.println("Rendering a" + block.getClass() + " with coords " + block.x() + ", " + block.y() + " with dimensions " + block.width() + ", " + block.height());
 			}
 		}
+		Graphics.setColor(Color.WHITE);
+		Graphics.drawString("Changes: " + level.maxChanges , 10, 570);
 		if (gLevel != null) {
 			Graphics.setColor(FColor);
 			Graphics.fillRect(gLevel.focus.x(), gLevel.focus.y(), gLevel.focus.width(), gLevel.focus.height());
@@ -314,7 +327,11 @@ public class Engine extends GameEngine implements ActionListener {
 						if (A.getClass() == Block.Goal.class) {
 							Goal J = (Goal) A;
 							if (J.isEnd()) {
-								// TODO: Win code
+								physicsOn = false;
+								renderOn = false;
+								Graphics.setColor(Color.YELLOW);
+								Graphics.setFont(new Font("sans", Font.PLAIN, 100));
+								Graphics.drawString("Winning", 100, 300);
 							} else {
 								toRemove.add(J);
 								toAdd.add(J.target);
