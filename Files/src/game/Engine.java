@@ -335,8 +335,8 @@ public class Engine extends GameEngine implements ActionListener {
 							if (J.isEnd()) {
 								physicsOn = false;
 								renderOn = false;
-								Graphics.setColor(Color.YELLOW);
-								Graphics.setFont(new Font("sans", Font.PLAIN, 100));
+								
+								
 								if(level.maxChanges == 5){
 									//completed the level with max amount of moves, 3 stars
 									Image starsImage = importImage("stars/3stars.png");
@@ -352,8 +352,21 @@ public class Engine extends GameEngine implements ActionListener {
 									Graphics.drawImage(starsImage, 200, 325, 200, 60, null);
 								}else{
 									//Keemstar is the best youtuber of all time
+									Image starsImage = importImage("stars/0stars.png");
+									Graphics.drawImage(starsImage, 200, 325, 200, 60, null);
 								}
-								Graphics.drawString("Winning", 100, 300);
+								
+								//draw the text
+								if(level.maxChanges <= 0){
+									Graphics.setColor(Color.RED);
+									Graphics.setFont(new Font("sans", Font.PLAIN, 100));
+									Graphics.drawString("You Lost", 100, 300);
+								}else{
+									Graphics.setColor(Color.YELLOW);
+									Graphics.setFont(new Font("sans", Font.PLAIN, 100));	
+									Graphics.drawString("You Won", 100, 300);
+								}
+								
 								
 								
 							
