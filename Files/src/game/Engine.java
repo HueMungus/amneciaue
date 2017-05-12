@@ -13,6 +13,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferStrategy;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class Engine extends GameEngine implements ActionListener {
 	JFrame mFrame;
 	JPanel mPanel;
 	Graphics2D Graphics;
+	BufferStrategy bs;
 //	Image stuff
 	Image menuImage, otherMenuImage;
 	
@@ -209,9 +211,11 @@ public class Engine extends GameEngine implements ActionListener {
 		mPanel.setDoubleBuffered(true);
 		
 		
-		renderOn = true;									// false by default
-		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
-		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
+		renderOn = true;
+		loop.start();
+		mFrame.createBufferStrategy(2);
+		bs = mFrame.getBufferStrategy();
+		Graphics = (Graphics2D) bs.getDrawGraphics();
 		Graphics.setFont(new Font("sans", Font.PLAIN, 15));
 		Graphics.setBackground(Color.black);
 		Graphics.setRenderingHint(
@@ -256,6 +260,8 @@ public class Engine extends GameEngine implements ActionListener {
 	public void Render() {
 		//		Rendering
 		//		Flush screen
+		Graphics = (Graphics2D) bs.getDrawGraphics();
+		Graphics.setBackground(black);
 		Graphics.clearRect(0, 0, mFrame.getWidth(), mFrame.getHeight());
 
 		//		Render Blocks
@@ -277,6 +283,7 @@ public class Engine extends GameEngine implements ActionListener {
 			Graphics.setColor(FColor);
 			Graphics.fillRect(gLevel.focus.x(), gLevel.focus.y(), gLevel.focus.width(), gLevel.focus.height());
 		}
+		bs.show();
 	}
 	
 	public void Collisions() {
