@@ -52,11 +52,14 @@ public class Engine extends GameEngine implements ActionListener {
 	Graphics2D Graphics;
 //	Image stuff
 	Image menuImage, otherMenuImage;
-
+	
 	@SuppressWarnings("serial")
 	public Engine() {
 		menuImage = importImage("menu.jpg");
 		otherMenuImage = importImage("othermenu.jpg");
+		
+		
+		
 		
 		mFrame = new JFrame();
 		mPanel = new JPanel();
@@ -134,8 +137,10 @@ public class Engine extends GameEngine implements ActionListener {
 				level = menu;
 			}
 		};
+		
 		othermenu.add(new Block(otherMenuImage, 600, 600));
 		level = menu;
+		
 //					Panel Key binds
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.ALT_DOWN_MASK, true), "alt left");
 		mPanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true), "left");
@@ -202,7 +207,8 @@ public class Engine extends GameEngine implements ActionListener {
 		mFrame.add(mPanel);
 		mFrame.setVisible(true);
 		mPanel.setDoubleBuffered(true);
-
+		
+		
 		renderOn = true;									// false by default
 		loop.start();										// loop is the timer that calls the actionPerformed(ActionEvent e) every 50 milliseconds
 		Graphics = (Graphics2D) mFrame.getGraphics();		// Used to render shit
@@ -331,7 +337,27 @@ public class Engine extends GameEngine implements ActionListener {
 								renderOn = false;
 								Graphics.setColor(Color.YELLOW);
 								Graphics.setFont(new Font("sans", Font.PLAIN, 100));
+								if(level.maxChanges == 5){
+									//completed the level with max amount of moves, 3 stars
+									Image starsImage = importImage("stars/3stars.png");
+									Graphics.drawImage(starsImage, 200, 325, 200, 60, null);
+									
+								}else if(level.maxChanges == 4){
+									//completed the level, 2 stars
+									Image starsImage = importImage("stars/2stars.png");
+									Graphics.drawImage(starsImage, 200, 325, 200, 60, null);
+								}else if(level.maxChanges <= 3 && level.maxChanges > 0){
+									//completed level with with poor moves, 1 star
+									Image starsImage = importImage("stars/1star.png");
+									Graphics.drawImage(starsImage, 200, 325, 200, 60, null);
+								}else{
+									//Keemstar is the best youtuber of all time
+								}
 								Graphics.drawString("Winning", 100, 300);
+								
+								
+							
+								
 							} else {
 								toRemove.add(J);
 								toAdd.add(J.target);
