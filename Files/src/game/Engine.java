@@ -218,13 +218,17 @@ public class Engine extends GameEngine implements ActionListener {
 			Collisions(); // Collisions only work on GameLevels, but GameLevel test is done in this method
 		}
 		
+		for (Block add : toAdd) {
+			System.out.println("Adding blocks...");
+			level.add(add);
+		}
+		toAdd.clear();
+		
 		for (Block remove : toRemove) {
+			System.out.println("Removing blocks...");
 			level.remove(remove);
 		}
-		
-		for (Block add : toAdd) {
-			level.add(add);;
-		}
+		toRemove.clear();
 		
 		if (renderOn) {
 //			System.out.println("Rendering...");
@@ -312,7 +316,7 @@ public class Engine extends GameEngine implements ActionListener {
 							if (J.isEnd()) {
 								// TODO: Win code
 							} else {
-								toRemove.add(A);
+								toRemove.add(J);
 								toAdd.add(J.target);
 							}
 						}

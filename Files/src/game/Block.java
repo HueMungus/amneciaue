@@ -166,6 +166,7 @@ public class Block {
 		public Goal(float x, float y, float x1, float y1) { this((int) x, (int) y, (int) x1, (int) y1); }
 		
 		public boolean isEnd() {
+			System.out.println("isEnd called: result = " + (target == null));
 			return this.target == null;
 		}
 		
