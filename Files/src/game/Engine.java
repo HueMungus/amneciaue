@@ -26,7 +26,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import game.Block.Goal;
-
+//'use' the game engine
 public class Engine extends GameEngine implements ActionListener {	
 //	Color stuff
 	public static Color MBColor = Color.BLUE;
