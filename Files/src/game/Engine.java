@@ -26,7 +26,7 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import game.Block.Goal;
-//'use' the game engine as required by the rules. 
+//'use' the game engine as required by the rules of STEM, but they stated we did not have to use every part of it. 'Every'. 
 public class Engine extends GameEngine implements ActionListener {	
 //	Color stuff
 	public static Color MBColor = Color.BLUE;
