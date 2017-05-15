@@ -26,7 +26,14 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import game.Block.Goal;
-//'use' the game engine as required by the rules of STEM, but they stated we did not have to use every part of it. 'Every'. 
+/*
+ * The Marking Criteria for use of the game engine: 
+ * 
+ *1. Use of the Game Engine.
+ *-Games must use the game engine, they should be a single java file extending the GameEngine class. :DONE, we have our game/java file extending the game engine
+ *-The games don't have to use every feature of the engine those they do should be used correctly. :DONE states don't have to use every feature
+ *-For example, you should not update any game objects in the paintComponent function. 
+*/
 public class Engine extends GameEngine implements ActionListener {	
 //	Color stuff
 	public static Color MBColor = Color.BLUE;
